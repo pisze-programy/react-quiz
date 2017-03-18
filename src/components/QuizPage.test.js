@@ -4,7 +4,9 @@ import { mount }  from 'enzyme';
 import { QuizPage } from './QuizPage.js';
 
 describe('Game page tests:', () => {
-  const component = mount(<QuizPage />);
+  const actions = {};
+
+  const component = mount(<QuizPage actions={actions} />);
 
   it('Should render Game page container', () => {
     expect(component.length).toBeTruthy();
