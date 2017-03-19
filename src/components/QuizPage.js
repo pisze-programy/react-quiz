@@ -1,45 +1,62 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as quizActions from '../actions/quizActions';
+import * as questionsActions from '../actions/questionsActions';
 
 export class QuizPage extends Component {
   constructor (props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      quiz: {
+        currentQuestion: 0,
+        error: false,
+        isFetching: false,
+        loading: false,
+        start: false,
+        questions: [],
+        score: 0,
+      }
+    };
   }
 
   render() {
-    const loading = false;
+    if (this.state.quiz.error) {
+      return (<div className="error">Error while fetching data</div>)
+    }
 
-    if (loading) {
+    if (this.state.quiz.loading) {
       return (<div className="loading">LOADING</div>)
+    }
+
+    if (this.state.quiz.isFetching) {
+      return <p className="loading">Fetching Questions</p>
     }
 
     return (
       <div>
-        yep
+        <button>Start quiz</button>
       </div>
     );
   }
 }
 
 QuizPage.propTypes = {
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  questions: PropTypes.object.isRequired,
 };
 
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    quiz: state.quiz
+    questions: state.questions
   }
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(quizActions, dispatch)
+    actions: bindActionCreators(questionsActions, dispatch)
   };
 }
 
