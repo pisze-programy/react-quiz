@@ -1,7 +1,7 @@
-import React from 'react';
-import expect from 'expect';
-import { mount }  from 'enzyme';
-import QuestionCounter from './QuestionCounter.js';
+import React from "react";
+import expect from "expect";
+import {mount} from "enzyme";
+import QuestionCounter from "./QuestionCounter.js";
 
 describe('Game page tests:', () => {
   let current = 1;

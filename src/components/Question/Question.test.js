@@ -1,7 +1,7 @@
-import React from 'react';
-import expect from 'expect';
-import { mount }  from 'enzyme';
-import Question from './Question.js';
+import React from "react";
+import expect from "expect";
+import {mount} from "enzyme";
+import Question from "./Question.js";
 
 describe('Game page tests:', () => {
   const component = mount(<Question content="This is content"/>);

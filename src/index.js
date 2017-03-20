@@ -1,10 +1,10 @@
-import React from 'react';
-import { render } from 'react-dom';
-import configureStore from './store';
-import { Provider } from 'react-redux';
-import './styles/application.css';
+import React from "react";
+import {render} from "react-dom";
+import configureStore from "./store";
+import {Provider} from "react-redux";
+import "./styles/application.css";
 
-import QuizPage from './components/QuizPage';
+import QuizPage from "./components/QuizPage";
 
 const store = configureStore();
 

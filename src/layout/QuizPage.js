@@ -1,7 +1,7 @@
-import React, { PropTypes, Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as questionsActions from '../actions/questionsActions';
+import React, {Component, PropTypes} from "react";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as questionsActions from "../actions/questionsActions";
 
 export class QuizPage extends Component {
   constructor (props) {
@@ -43,7 +43,7 @@ export class QuizPage extends Component {
 
 QuizPage.propTypes = {
   actions: PropTypes.object.isRequired,
-  questions: PropTypes.object.isRequired,
+  questions: PropTypes.array.isRequired,
 };
 
 /* istanbul ignore next */

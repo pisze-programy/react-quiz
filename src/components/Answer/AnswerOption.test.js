@@ -1,7 +1,7 @@
-import React from 'react';
-import expect from 'expect';
-import { mount }  from 'enzyme';
-import Answer from './Answer.js';
+import React from "react";
+import expect from "expect";
+import {mount} from "enzyme";
+import AnswerOption from "./AnswerOption.js";
 
 describe('Game page tests:', () => {
   const answer = {
@@ -9,9 +9,9 @@ describe('Game page tests:', () => {
     content: "This is answer",
   };
 
-  const component = mount(<Answer answer={answer} />);
+  const component = mount(<AnswerOption type={answer.type} content={answer.content} />);
 
-  it('Should render Answer component', () => {
+  it('Should render AnswerOption component', () => {
     expect(component.length).toBeTruthy();
   });
 

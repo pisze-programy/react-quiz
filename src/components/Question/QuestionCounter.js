@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, {PropTypes} from "react";
 
 export default function QuestionCounter({current, total}) {
   return (
@@ -9,6 +9,6 @@ export default function QuestionCounter({current, total}) {
 }
 
 QuestionCounter.propTypes = {
-  current: PropTypes.string.isRequired,
-  total: PropTypes.string.isRequired,
+  current: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
 };

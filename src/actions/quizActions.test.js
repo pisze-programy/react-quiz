@@ -1,7 +1,5 @@
-import React from 'react';
-import expect from 'expect';
-import * as wordAction from './quizActions.js';
-import * as types from './actionTypes.js';
+import React from "react";
+import expect from "expect";
 
 describe('Quiz Actions tests:', () => {
   it('Return true', () => {

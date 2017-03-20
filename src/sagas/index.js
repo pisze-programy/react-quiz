@@ -1,20 +1,5 @@
-import { call, put, take } from 'redux-saga/effects';
-import { fetchQuestions } from '../api/questions';
-import * as types from '../actions/actionTypes';
+import {watchLoadQuestions} from "./getQuestions";
 
-export function* loadQuestions() {
-  try {
-    const questions = yield call(fetchQuestions);
-
-    yield put({type: types.RECEIVED_QUESTIONS, questions: questions});
-  } catch (error) {
-    yield put({type: types.FAILURE_LOAD_QUESTIONS, error})
-  }
-}
-
-export function* watchLoadQuestions() {
-  while (true) {
-    yield take(types.LOAD_QUESTIONS);
-    yield call(loadQuestions);
-  }
+export default {
+  watchLoadQuestions
 }
