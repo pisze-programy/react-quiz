@@ -10,7 +10,7 @@ export default function Answer({answer}) {
         className="input"
         name="radioGroup"/>
       <label className="label" htmlFor={answer.type}>
-        {answer.contnet}
+        {answer.content}
       </label>
     </div>
   );

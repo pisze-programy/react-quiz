@@ -1,10 +1,11 @@
 import React from 'react';
 import expect from 'expect';
 import { mount }  from 'enzyme';
-import { Answer } from './Answer.js';
+import Answer from './Answer.js';
 
 describe('Game page tests:', () => {
   const answer = {
+    type: 'type',
     content: "This is answer",
   };
 
@@ -19,7 +20,7 @@ describe('Game page tests:', () => {
   });
 
   it('Should show label with content', () => {
-    expect(component.find('div').find('content').text()).toBe("This is content");
+    expect(component.find('div').find('.label').text()).toBe("This is answer");
   });
 
   it('Should show radio input', () => {

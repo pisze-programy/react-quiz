@@ -17,7 +17,7 @@ describe('Game page tests:', () => {
   });
 
   it('Should show div wrapper', () => {
-    expect(component.find('div').text()).toBe(true);
+    expect(component.find('div').length).toEqual(1);
   });
 
   it('Should not show loading', () => {
