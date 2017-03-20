@@ -4,7 +4,7 @@ import configureStore from "./store";
 import {Provider} from "react-redux";
 import "./styles/application.css";
 
-import QuizPage from "./components/QuizPage";
+import QuizPage from "./layout/QuizPage";
 
 const store = configureStore();
 

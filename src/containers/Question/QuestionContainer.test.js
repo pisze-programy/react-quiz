@@ -1,11 +1,15 @@
-export const fetchQuestions = () => {
-    return [
+import React from "react";
+import expect from "expect";
+import {mount} from "enzyme";
+import QuestionContainer from "./QuestionContainer.js";
+
+describe('Game page tests:', () => {
+  const questions = {
+    list: [
       {
         title: 'What sound does a dog make?',
         id: 0,
-        type: 'dog',
         score: 100,
-        time: 5000,
         answers: [
           {
             title: 'Meow',
@@ -24,9 +28,7 @@ export const fetchQuestions = () => {
       {
         title: 'What sound does a cat make?',
         id: 1,
-        type: 'cat',
         score: 150,
-        time: 10000,
         answers: [
           {
             title: 'Meow',
@@ -42,5 +44,18 @@ export const fetchQuestions = () => {
           }
         ]
       }
-    ]
-};
+    ],
+    isFetching: false,
+    error: false,
+  };
+
+  const component = mount(<QuestionContainer questions={questions} />);
+
+  it('Should render QuestionContainer component', () => {
+    expect(component.length).toBeTruthy();
+  });
+
+  it('Should have child', () => {
+    expect(component.find('div.question-container').length).toEqual(1);
+  });
+});

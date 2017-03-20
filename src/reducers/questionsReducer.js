@@ -14,7 +14,7 @@ export default function questionsReducer(state = {}, action) {
     case types.RECEIVED_QUESTIONS:
       prepare = {
         isFetching: false,
-        questions: action.questions
+        list: action.questions
       };
 
       return Object.assign({}, state, prepare);

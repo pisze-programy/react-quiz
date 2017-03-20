@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as questionsActions from "../actions/questionsActions";
+import QuestionContainer from "../containers/Question/QuestionContainer"
 
 export class QuizPage extends Component {
   constructor (props) {
@@ -10,32 +11,34 @@ export class QuizPage extends Component {
     this.state = {
       quiz: {
         currentQuestion: 0,
-        error: false,
-        isFetching: false,
         loading: false,
         start: false,
-        questions: [],
         score: 0,
-      }
+      },
+      questions: {
+        list: [],
+        isFetching: false,
+        error: false,
+      },
     };
+
+    this.startQuiz = this.startQuiz.bind(this);
+  }
+
+  startQuiz() {
+    this.props.actions.loadQuestions(this.state.questions);
   }
 
   render() {
-    if (this.state.quiz.error) {
-      return (<div className="error">Error while fetching data</div>)
-    }
-
     if (this.state.quiz.loading) {
       return (<div className="loading">LOADING</div>)
     }
 
-    if (this.state.quiz.isFetching) {
-      return <p className="loading">Fetching Questions</p>
-    }
-
     return (
       <div>
-        <button>Start quiz</button>
+        <a onClick={this.startQuiz}>Start quiz</a>
+
+        <QuestionContainer questions={this.props.questions} />
       </div>
     );
   }
@@ -43,7 +46,7 @@ export class QuizPage extends Component {
 
 QuizPage.propTypes = {
   actions: PropTypes.object.isRequired,
-  questions: PropTypes.array.isRequired,
+  questions: PropTypes.object.isRequired,
 };
 
 /* istanbul ignore next */
