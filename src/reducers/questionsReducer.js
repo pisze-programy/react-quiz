@@ -14,7 +14,8 @@ export default function questionsReducer(state = {}, action) {
     case types.RECEIVED_QUESTIONS:
       prepare = {
         isFetching: false,
-        list: action.questions
+        list: action.questions,
+        current: action.questions[0]
       };
 
       return Object.assign({}, state, prepare);
@@ -26,6 +27,15 @@ export default function questionsReducer(state = {}, action) {
       };
 
       return Object.assign({}, state, prepare);
+
+    case types.NEXT_QUESTION:
+      const currentIndex = action.payload.list.indexOf(action.payload.current);
+
+      prepare = {
+        current: action.payload.list[currentIndex + 1]
+      };
+
+      return Object.assign({}, action.payload, prepare);
 
     default:
       return state;

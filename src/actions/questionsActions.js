@@ -11,3 +11,7 @@ export function receivedQuestions(payload) {
 export function failureLoadQuestions(payload) {
   return { type: types.FAILURE_LOAD_QUESTIONS, payload };
 }
+
+export function nextQuestions(payload) {
+  return { type: types.NEXT_QUESTION, payload };
+}

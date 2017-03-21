@@ -13,8 +13,6 @@ export function* loadQuestions() {
 }
 
 export function* watchLoadQuestions() {
-  while (true) {
-    yield take(types.LOAD_QUESTIONS);
-    yield call(loadQuestions);
-  }
+  yield take(types.LOAD_QUESTIONS);
+  yield call(loadQuestions);
 }

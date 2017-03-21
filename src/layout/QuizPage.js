@@ -19,14 +19,25 @@ export class QuizPage extends Component {
         list: [],
         isFetching: false,
         error: false,
+        current: {},
+        last: false,
       },
     };
 
     this.startQuiz = this.startQuiz.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   startQuiz() {
-    this.props.actions.loadQuestions(this.state.questions);
+    this.props.actions.loadQuestions(this.props.questions);
+  }
+
+  nextQuestion() {
+    return this.props.actions.nextQuestions(this.props.questions);
+  }
+
+  componentWillMount() {
+
   }
 
   render() {
@@ -34,11 +45,15 @@ export class QuizPage extends Component {
       return (<div className="loading">LOADING</div>)
     }
 
+    if (!this.props.questions.list) {
+      return <a onClick={this.startQuiz}>Start quiz</a>
+    }
+
     return (
       <div>
-        <a onClick={this.startQuiz}>Start quiz</a>
-
-        <QuestionContainer questions={this.props.questions} />
+        <QuestionContainer
+          questions={this.props.questions}
+          goToNextQuestion={this.nextQuestion} />
       </div>
     );
   }
