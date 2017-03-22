@@ -2,7 +2,8 @@ import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as questionsActions from "../actions/questionsActions";
-import QuestionContainer from "../containers/Question/QuestionContainer"
+import QuestionContainer from "../containers/Question/QuestionContainer";
+import Score from "../components/Common/Score";
 
 export class QuizPage extends Component {
   constructor (props) {
@@ -29,7 +30,7 @@ export class QuizPage extends Component {
   }
 
   startQuiz() {
-    this.props.actions.loadQuestions(this.props.questions);
+    this.props.actions.loadQuestions(this.state.questions);
   }
 
   nextQuestion() {
@@ -41,16 +42,26 @@ export class QuizPage extends Component {
   }
 
   render() {
-    if (this.state.quiz.loading) {
-      return (<div className="loading">LOADING</div>)
+    if (this.props.questions.error) {
+      return (<p className="error">Error while fetching data</p>)
+    }
+
+    if (this.props.questions.isFetching) {
+      return <p className="loading isFetching">Fetching Questions</p>
     }
 
     if (!this.props.questions.list) {
       return <a onClick={this.startQuiz}>Start quiz</a>
     }
 
+    if (!this.props.questions.current) {
+      return <p>No question</p>
+    }
+
     return (
-      <div>
+      <div className="quiz-page">
+        <Score points={this.props.questions.current.score} />
+
         <QuestionContainer
           questions={this.props.questions}
           goToNextQuestion={this.nextQuestion} />

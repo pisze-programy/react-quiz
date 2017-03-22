@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import Question from "../../components/Question/Question";
 import AnswerOption from "../../components/Answer/AnswerOption";
+import QuestionCounter from "../../components/Question/QuestionCounter";
 
 export default class QuestionContainer extends Component {
   constructor(props) {
@@ -25,21 +26,11 @@ export default class QuestionContainer extends Component {
   }
 
   render() {
-    if (this.props.questions.error) {
-      return (<div className="error">Error while fetching data</div>)
-    }
-
-    if (this.props.questions.isFetching) {
-      return <p className="loading">Fetching Questions</p>
-    }
-
-    if (!this.props.questions.current) {
-      return <p>No question</p>
-    }
-
     return (
       <div className="question-container">
           <div>
+            <QuestionCounter total={this.props.questions.list.length} current={this.props.questions.current.id + 1} />
+
             <Question question={this.props.questions.current} />
 
             {this.props.questions.current.answers.map(answer => {

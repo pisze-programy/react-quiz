@@ -45,7 +45,29 @@ describe('Game page tests:', () => {
           }
         ]
       }
-    ]
+    ],
+    loading: false,
+    error: false,
+    isFetching: false,
+    current: {
+      title: 'What sound does a dog make?',
+      id: 0,
+      score: 100,
+      answers: [
+        {
+          title: 'Meow',
+          id: 0
+        },
+        {
+          title: 'Woof',
+          id: 1
+        },
+        {
+          title: 'Hoo',
+          id: 2
+        }
+      ]
+    },
   };
 
   const component = mount(<QuizPage questions={questions} actions={actions} />);
@@ -55,21 +77,40 @@ describe('Game page tests:', () => {
   });
 
   it('Should have child', () => {
-    expect(component.find('div').length).toEqual(1);
+    expect(component.find('div.quiz-page').length).toEqual(1);
   });
 
-  it('Should show div wrapper', () => {
-    expect(component.find('div').length).toEqual(1);
-  });
-
-  it('Should show href for fetching data', () => {
-    const componentWithoutQuestions = mount(
+  it('Should show loading element error', () => {
+    const errorQuestions = Object.assign({}, questions, {error: true});
+    const componentWithErrors = mount(
       <QuizPage
-        questions={[]}
+        questions={errorQuestions}
         actions={actions} />
     );
 
-    expect(componentWithoutQuestions.find('a').length).toEqual(1);
+    expect(componentWithErrors.find('p.error').length).toEqual(1);
+  });
+
+  it('Should show information about no more questions', () => {
+    const noCurrentQuestions = Object.assign({}, questions, {current: null});
+    const componentWithoutQuestions = mount(
+      <QuizPage
+        questions={noCurrentQuestions}
+        actions={actions} />
+    );
+
+    expect(componentWithoutQuestions.find('p').length).toEqual(1);
+  });
+
+  it('Should show href for fetching data', () => {
+    const fetchingQuestions = Object.assign({}, questions, {isFetching: true});
+    const componentWithFetching = mount(
+      <QuizPage
+        questions={fetchingQuestions}
+        actions={actions} />
+    );
+
+    expect(componentWithFetching.find('p.isFetching').length).toEqual(1);
   });
 
   it('Should not show loading', () => {

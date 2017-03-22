@@ -83,24 +83,4 @@ describe('Quiz page tests:', () => {
   it('Should have child', () => {
     expect(component.find('div.question-container').length).toEqual(1);
   });
-
-  it('Should show loading element while fetching data', () => {
-    const componentWithLoader = mount(
-      <QuestionContainer
-        questions={Object.assign({}, questions, {isFetching: true})}
-        goToNextQuestion={goToNextQuestion} />
-    );
-
-    expect(componentWithLoader.find('p.loading').length).toEqual(1);
-  });
-
-  it('Should show information about no more questions', () => {
-    const componentWithEmptyCurrentQuestion = mount(
-      <QuestionContainer
-        questions={Object.assign({}, questions, {current: null})}
-        goToNextQuestion={goToNextQuestion} />
-    );
-
-    expect(componentWithEmptyCurrentQuestion.find('p').length).toEqual(1);
-  });
 });

@@ -3,7 +3,7 @@ import React, {PropTypes} from "react";
 export default function Score({points}) {
   return (
     <div>
-      {points}
+      You can achieve {points} points
     </div>
   );
 }

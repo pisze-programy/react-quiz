@@ -9,7 +9,14 @@ describe('Game page tests:', () => {
     content: "This is answer",
   };
 
-  const component = mount(<AnswerOption type={answer.type} content={answer.content} />);
+  const onClickHandle = () => false;
+
+  const component = mount(
+    <AnswerOption
+      type={answer.type}
+      id="cq1238s"
+      content={answer.content}
+      onClickHandle={onClickHandle} />);
 
   it('Should render AnswerOption component', () => {
     expect(component.length).toBeTruthy();
