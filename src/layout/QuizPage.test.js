@@ -4,7 +4,8 @@ import {mount} from "enzyme";
 import {QuizPage} from "./QuizPage.js";
 
 describe('Game page tests:', () => {
-  const actions = {};
+  const quizActions = {};
+  const questionsActions = {};
   const questions = {
     list: [
       {
@@ -70,50 +71,96 @@ describe('Game page tests:', () => {
     },
   };
 
-  const component = mount(<QuizPage questions={questions} actions={actions} />);
+  const quiz = {
+    loading: false,
+    start: false,
+    finish: false,
+    score: 0,
+  };
+
+  const component = mount(<QuizPage
+    questions={questions}
+    questionsActions={questionsActions}
+    quizActions={quizActions}
+    quiz={quiz} />);
 
   it('Should render Game page container', () => {
     expect(component.length).toBeTruthy();
   });
 
-  it('Should have child', () => {
-    expect(component.find('div.quiz-page').length).toEqual(1);
+  it('Should not show loading', () => {
+    expect(component.find('.loading').exists()).toBe(false);
   });
 
-  it('Should show loading element error', () => {
-    const errorQuestions = Object.assign({}, questions, {error: true});
+  it('Should show finish state while quiz is finished', () => {
+    const finishQuiz = Object.assign({}, quiz, {finish: true});
     const componentWithErrors = mount(
       <QuizPage
-        questions={errorQuestions}
-        actions={actions} />
+        questions={questions}
+        questionsActions={questionsActions}
+        quizActions={quizActions}
+        quiz={finishQuiz}  />
     );
 
-    expect(componentWithErrors.find('p.error').length).toEqual(1);
+    expect(componentWithErrors.find('.finish').length).toEqual(1);
+  });
+
+  it('Should have start quiz href if quiz did not start yet', () => {
+    expect(component.find('.start-quiz').length).toEqual(1);
+  });
+
+  it('Should show loader while quiz if loading', () => {
+    const loadingQuiz = Object.assign({}, quiz, {start: true, loading: true});
+    const componentWithLoader = mount(
+      <QuizPage
+        questions={questions}
+        questionsActions={questionsActions}
+        quizActions={quizActions}
+        quiz={loadingQuiz}  />
+    );
+
+    expect(componentWithLoader.find('.loading').length).toEqual(1);
   });
 
   it('Should show information about no more questions', () => {
     const noCurrentQuestions = Object.assign({}, questions, {current: null});
+    const startedQuiz = Object.assign({}, quiz, {start: true});
     const componentWithoutQuestions = mount(
       <QuizPage
         questions={noCurrentQuestions}
-        actions={actions} />
+        questionsActions={questionsActions}
+        quizActions={quizActions}
+        quiz={startedQuiz}  />
     );
 
-    expect(componentWithoutQuestions.find('p').length).toEqual(1);
+    expect(componentWithoutQuestions.find('.no-more-questions').length).toEqual(1);
+  });
+
+  it('Should show href to fetch data', () => {
+    const noQuestions = Object.assign({}, questions, {list: null});
+    const startedQuiz = Object.assign({}, quiz, {start: true});
+    const componentWithFetching = mount(
+      <QuizPage
+        questions={noQuestions}
+        questionsActions={questionsActions}
+        quizActions={quizActions}
+        quiz={startedQuiz}  />
+    );
+
+    expect(componentWithFetching.find('.fetch-questions').length).toEqual(1);
   });
 
   it('Should show href for fetching data', () => {
     const fetchingQuestions = Object.assign({}, questions, {isFetching: true});
+    const startedQuiz = Object.assign({}, quiz, {start: true});
     const componentWithFetching = mount(
       <QuizPage
         questions={fetchingQuestions}
-        actions={actions} />
+        questionsActions={questionsActions}
+        quizActions={quizActions}
+        quiz={startedQuiz}  />
     );
 
-    expect(componentWithFetching.find('p.isFetching').length).toEqual(1);
-  });
-
-  it('Should not show loading', () => {
-    expect(component.find('div.loading').exists()).toBe(false);
+    expect(componentWithFetching.find('.is-fetching').length).toEqual(1);
   });
 });

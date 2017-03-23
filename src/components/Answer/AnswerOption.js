@@ -12,6 +12,7 @@ export default function AnswerOption({id, type, content, onClickHandle}) {
       <input
         type="radio"
         id={type}
+
         value={type}
         className="input"
         name="radioGroup"/>

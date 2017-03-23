@@ -3,6 +3,8 @@ import * as types from "../actions/actionTypes";
 export default function questionsReducer(state = {}, action) {
   let prepare;
 
+  console.log(state, action);
+
   switch (action.type) {
     case types.LOAD_QUESTIONS:
       prepare = {
@@ -18,7 +20,7 @@ export default function questionsReducer(state = {}, action) {
         current: action.questions[0]
       };
 
-      return Object.assign({}, state, prepare);
+      return Object.assign({}, action, prepare);
 
     case types.FAILURE_LOAD_QUESTIONS:
       prepare = {
@@ -26,16 +28,16 @@ export default function questionsReducer(state = {}, action) {
         isFetching: false
       };
 
-      return Object.assign({}, state, prepare);
+      return Object.assign({}, action, prepare);
 
     case types.NEXT_QUESTION:
-      const currentIndex = action.payload.list.indexOf(action.payload.current);
+      const currentIndex = state.list.indexOf(state.current);
 
       prepare = {
-        current: action.payload.list[currentIndex + 1]
+        current: state.list[currentIndex + 1]
       };
 
-      return Object.assign({}, action.payload, prepare);
+      return Object.assign({}, state, prepare);
 
     default:
       return state;

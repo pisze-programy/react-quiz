@@ -1,6 +1,5 @@
 export const START_QUIZ = 'START_QUIZ';
 export const FINISH_QUIZ = 'FINISH_QUIZ';
-export const RESET_QUIZ = 'RESET_QUIZ';
 
 export const LOAD_QUESTIONS = 'LOAD_QUESTIONS';
 export const RECEIVED_QUESTIONS = 'RECEIVED_QUESTIONS';

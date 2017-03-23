@@ -9,8 +9,8 @@ export default class QuestionContainer extends Component {
 
     this.state = {
       answer: {
-        questionId: 0,
-        answerId: 0
+        questionId: null,
+        answerId: null
       },
     };
 
@@ -19,10 +19,15 @@ export default class QuestionContainer extends Component {
 
   onAnswerClick(data) {
     const {answerId} = data;
+    const answer = Object.assign({}, this.state.answer, {answerId, questionId: this.props.questions.current.id});
+
+    this.setState({
+      answer
+    });
 
     this.props.goToNextQuestion({
       answerId
-    })
+    });
   }
 
   render() {
