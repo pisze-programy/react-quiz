@@ -2,15 +2,15 @@ import React from "react";
 import {render} from "react-dom";
 import configureStore from "./store";
 import {Provider} from "react-redux";
+import {browserHistory, Router} from "react-router";
+import routes from "./routes";
 import "./styles/application.css";
-
-import QuizPage from "./layout/QuizPage";
 
 const store = configureStore();
 
 render (
   <Provider store={store}>
-    <QuizPage />
+    <Router routes={routes} history={browserHistory} />
   </Provider>,
   document.getElementById('root')
 );

@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
+import {Link} from "react-router";
 import {bindActionCreators} from "redux";
 import * as questionsActionsCreators from "../actions/questionsActions";
 import * as quizActionsCreators from "../actions/quizActions";
@@ -77,7 +78,7 @@ export class QuizPage extends Component {
       return (
         <div className="no-more-questions">
           <p>No more questions</p>
-          <a>Show LeaderShip</a>
+          <Link to="/leaderboard">Show Leaderboard</Link>
         </div>
       )
     }
