@@ -14,11 +14,13 @@ export default function quizReducer(state = {}, action) {
 
     case types.FINISH_QUIZ:
       prepare = {
-        start: false,
         finish: true,
       };
 
       return Object.assign({}, action.payload, prepare);
+
+    case types.RESET_QUIZ:
+      return Object.assign({}, action.payload);
 
     default:
       return state;

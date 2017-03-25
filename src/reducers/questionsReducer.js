@@ -30,6 +30,13 @@ export default function questionsReducer(state = {}, action) {
 
       return Object.assign({}, action, prepare);
 
+    case types.RESET_QUESTIONS:
+      prepare = {
+        current: state.list[0]
+      };
+
+      return Object.assign({}, state, prepare);
+
     case types.NEXT_QUESTION:
       const currentIndex = state.list.indexOf(state.current);
 

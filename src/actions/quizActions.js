@@ -7,3 +7,7 @@ export function startQuiz(payload) {
 export function finishQuiz(payload) {
   return { type: types.FINISH_QUIZ, payload };
 }
+
+export function resetQuiz(payload) {
+  return { type: types.RESET_QUIZ, payload };
+}

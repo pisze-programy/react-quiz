@@ -12,6 +12,10 @@ export function failureLoadQuestions(payload) {
   return { type: types.FAILURE_LOAD_QUESTIONS, payload };
 }
 
-export function nextQuestions(payload) {
+export function resetQuestions(payload) {
+  return { type: types.RESET_QUESTIONS, payload };
+}
+
+export function nextQuestion(payload) {
   return { type: types.NEXT_QUESTION, payload };
 }

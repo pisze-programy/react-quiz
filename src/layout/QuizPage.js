@@ -33,6 +33,11 @@ export class QuizPage extends Component {
     this.nextQuestion = this.nextQuestion.bind(this);
   }
 
+  componentWillUnmount () {
+    this.props.questionsActions.resetQuestions(this.props.questions);
+    this.props.quizActions.resetQuiz(this.state.quiz);
+  }
+
   startQuiz() {
     return this.props.quizActions.startQuiz(this.state.quiz);
   }
@@ -46,7 +51,7 @@ export class QuizPage extends Component {
   }
 
   nextQuestion() {
-    return this.props.questionsActions.nextQuestions(this.props.questions);
+    return this.props.questionsActions.nextQuestion(this.props.questions);
   }
 
   render() {
