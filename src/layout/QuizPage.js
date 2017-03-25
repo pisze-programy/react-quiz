@@ -4,8 +4,10 @@ import {Link} from "react-router";
 import {bindActionCreators} from "redux";
 import * as questionsActionsCreators from "../actions/questionsActions";
 import * as quizActionsCreators from "../actions/quizActions";
+import * as answersActionsCreators from "../actions/answersActions";
 import QuestionContainer from "../containers/Question/QuestionContainer";
 import Score from "../components/Common/Score";
+import AnswerStatus from "../components/Answer/AnswerStatus";
 
 export class QuizPage extends Component {
   constructor (props) {
@@ -25,12 +27,14 @@ export class QuizPage extends Component {
         current: {},
         last: false,
       },
+      answers: []
     };
 
     this.startQuiz = this.startQuiz.bind(this);
     this.finishQuiz = this.finishQuiz.bind(this);
     this.loadQuestions = this.loadQuestions.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.checkAnswerStatus = this.checkAnswerStatus.bind(this);
   }
 
   componentWillUnmount () {
@@ -52,6 +56,15 @@ export class QuizPage extends Component {
 
   nextQuestion() {
     return this.props.questionsActions.nextQuestion(this.props.questions);
+  }
+
+  checkAnswerStatus(data) {
+    const prepare = Object.assign({}, this.state.answers, [{
+      questionId: data.questionId,
+      answerId: data.answerId
+    }]);
+
+    return this.props.answersActions.statusAnswer(prepare);
   }
 
   render() {
@@ -94,7 +107,13 @@ export class QuizPage extends Component {
 
         <QuestionContainer
           questions={this.props.questions}
-          goToNextQuestion={this.nextQuestion} />
+          checkAnswerStatus={this.checkAnswerStatus} />
+
+        {this.props.answers &&
+          <AnswerStatus
+            answer={this.props.answers}
+            closeAction={this.nextQuestion} />
+        }
       </div>
     );
   }
@@ -102,8 +121,10 @@ export class QuizPage extends Component {
 
 QuizPage.propTypes = {
   questionsActions: PropTypes.object.isRequired,
+  answersActions: PropTypes.object.isRequired,
   quizActions: PropTypes.object.isRequired,
   questions: PropTypes.object.isRequired,
+  answers: PropTypes.object.isRequired,
   quiz: PropTypes.object.isRequired,
 };
 
@@ -111,6 +132,7 @@ QuizPage.propTypes = {
 function mapStateToProps(state) {
   return {
     questions: state.questions,
+    answers: state.answers,
     quiz: state.quiz,
   }
 }
@@ -119,6 +141,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     questionsActions: bindActionCreators(questionsActionsCreators, dispatch),
+    answersActions: bindActionCreators(answersActionsCreators, dispatch),
     quizActions: bindActionCreators(quizActionsCreators, dispatch),
   };
 }

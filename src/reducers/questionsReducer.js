@@ -3,8 +3,6 @@ import * as types from "../actions/actionTypes";
 export default function questionsReducer(state = {}, action) {
   let prepare;
 
-  console.log(state, action);
-
   switch (action.type) {
     case types.LOAD_QUESTIONS:
       prepare = {

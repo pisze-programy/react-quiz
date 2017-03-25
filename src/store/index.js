@@ -4,7 +4,7 @@ import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import createSagaMiddleware from "redux-saga";
 import logger from "redux-logger";
 
-import {watchLoadQuestions} from "./../sagas/getQuestions";
+import root from "./../sagas/getQuestions";
 
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
@@ -17,7 +17,7 @@ const configureStore = () => {
         reduxImmutableStateInvariant(),
         logger()
       )),
-    runSaga: sagaMiddleware.run(watchLoadQuestions)
+    runSaga: sagaMiddleware.run(root)
   };
 };
 

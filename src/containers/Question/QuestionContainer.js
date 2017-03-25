@@ -25,8 +25,8 @@ export default class QuestionContainer extends Component {
       answer
     });
 
-    this.props.goToNextQuestion({
-      answerId
+    this.props.checkAnswerStatus({
+      answer
     });
   }
 
@@ -54,5 +54,5 @@ export default class QuestionContainer extends Component {
 
 QuestionContainer.propTypes = {
   questions: PropTypes.object.isRequired,
-  goToNextQuestion: PropTypes.func.isRequired,
+  checkAnswerStatus: PropTypes.func.isRequired,
 };
