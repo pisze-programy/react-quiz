@@ -27,7 +27,12 @@ export class QuizPage extends Component {
         current: {},
         last: false,
       },
-      answers: []
+      answers: {
+        list: [],
+        isFetching: false,
+        error: false,
+        current: {},
+      }
     };
 
     this.startQuiz = this.startQuiz.bind(this);
@@ -55,14 +60,25 @@ export class QuizPage extends Component {
   }
 
   nextQuestion() {
+    this.props.answersActions.clearAnswer(this.props.answers);
+
     return this.props.questionsActions.nextQuestion(this.props.questions);
   }
 
   checkAnswerStatus(data) {
-    const prepare = Object.assign({}, this.state.answers, [{
-      questionId: data.questionId,
-      answerId: data.answerId
-    }]);
+    if (this.props.answers.current) return;
+
+    const prepare = Object.assign(
+      {},
+      this.state.answers,
+      this.props.answers,
+      {
+        current: {
+          answerId: data.answer.answerId,
+          questionId: data.answer.questionId,
+        },
+      }
+    );
 
     return this.props.answersActions.statusAnswer(prepare);
   }

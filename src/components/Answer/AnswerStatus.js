@@ -5,15 +5,17 @@ export default function AnswerStatus({answer, closeAction}) {
     return closeAction();
   }
 
-  console.log(answer);
+  if (!Object.keys(answer)) {
+    return <div className="no-answer-yet" />;
+  }
 
-  if (!Object.keys(answer).length) {
-    return <div className="status" />;
+  if (!answer.current) {
+    return <div className="status-empty" />;
   }
 
   return (
     <div>
-      {answer.status ? <p>CONGRATULATION, CORRECT</p> : <p>SORRY, INCORRECT</p>}
+      {answer.current.status ? <p>CONGRATULATION, CORRECT</p> : <p>SORRY, INCORRECT</p>}
 
 
       <a className="close" onClick={onCloseClick}>Close</a>

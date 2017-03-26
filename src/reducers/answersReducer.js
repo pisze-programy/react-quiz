@@ -9,15 +9,18 @@ export default function answersReducer(state = {}, action) {
         isFetching: true,
       };
 
-      return Object.assign({}, state, prepare);
+      return Object.assign({}, action.payload, prepare);
 
     case types.RECEIVED_STATUS_ANSWER:
       prepare = {
         isFetching: false,
-        status: action
+        current: {
+          ...state.current,
+          status: action.status
+        }
       };
 
-      return Object.assign({}, action, prepare);
+      return Object.assign({}, state, prepare);
 
     case types.FAILURE_STATUS_ANSWER:
       prepare = {
@@ -25,7 +28,18 @@ export default function answersReducer(state = {}, action) {
         isFetching: false,
       };
 
-      return Object.assign({}, action, prepare);
+      return Object.assign({}, state, prepare);
+
+    case types.CLEAR_ANSWER:
+      prepare = {
+        current: null,
+        list: [
+          ...action.payload.list,
+          action.payload.current
+        ],
+      };
+
+      return Object.assign({}, action.payload, prepare);
 
     default:
       return state;

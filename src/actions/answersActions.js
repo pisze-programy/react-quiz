@@ -11,3 +11,7 @@ export function receivedStatusAnswer(payload) {
 export function failureStatusAnswer(payload) {
   return { type: types.FAILURE_STATUS_ANSWER, payload };
 }
+
+export function clearAnswer(payload) {
+  return {type: types.CLEAR_ANSWER, payload};
+}

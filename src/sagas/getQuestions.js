@@ -1,4 +1,4 @@
-import {call, put, take, fork} from "redux-saga/effects";
+import {call, put, fork, takeEvery} from "redux-saga/effects";
 import {fetchQuestions} from "../api/getQuestions";
 import {fetchStatusAnswer} from "../api/getAnswerStatus";
 import * as types from "../actions/actionTypes";
@@ -14,8 +14,7 @@ export function* loadQuestions() {
 }
 
 export function* watchLoadQuestions() {
-  yield take(types.LOAD_QUESTIONS);
-  yield call(loadQuestions);
+  yield takeEvery(types.LOAD_QUESTIONS, loadQuestions);
 }
 
 export function* statusAnswer() {
@@ -29,8 +28,7 @@ export function* statusAnswer() {
 }
 
 export function* watchStatusAnswer() {
-  yield take(types.CHECK_STATUS_ANSWER);
-  yield call(statusAnswer);
+  yield takeEvery(types.CHECK_STATUS_ANSWER, statusAnswer);
 }
 
 export default function* root() {
