@@ -6,11 +6,17 @@ import {browserHistory, Router} from "react-router";
 import routes from "./routes";
 import "./styles/application.css";
 
+import "./toolbox/theme.css";
+import theme from './toolbox/theme';
+import ThemeProvider from 'react-toolbox/lib/ThemeProvider';
+
 const store = configureStore();
 
 render (
   <Provider store={store}>
-    <Router routes={routes} history={browserHistory} />
+    <ThemeProvider theme={theme}>
+      <Router routes={routes} history={browserHistory} />
+    </ThemeProvider>
   </Provider>,
   document.getElementById('root')
 );

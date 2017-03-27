@@ -8,6 +8,7 @@ import * as answersActionsCreators from "../actions/answersActions";
 import QuestionContainer from "../containers/Question/QuestionContainer";
 import Score from "../components/Common/Score";
 import AnswerStatus from "../components/Answer/AnswerStatus";
+import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 export class QuizPage extends Component {
   constructor (props) {
@@ -43,7 +44,10 @@ export class QuizPage extends Component {
   }
 
   componentWillUnmount () {
-    this.props.questionsActions.resetQuestions(this.props.questions);
+    if (this.props.questions.list && this.props.questions.list.length) {
+      this.props.questionsActions.resetQuestions(this.props.questions);
+    }
+
     this.props.quizActions.resetQuiz(this.state.quiz);
   }
 
@@ -93,7 +97,12 @@ export class QuizPage extends Component {
     }
 
     if (this.props.quiz.loading) {
-      return (<p className="loading">Loading...</p>)
+      return (
+        <div>
+          <p className="loading">Loading...</p>
+          <ProgressBar type="linear" mode="indeterminate" />
+        </div>
+      )
     }
 
     if (this.props.questions.error) {
@@ -101,7 +110,12 @@ export class QuizPage extends Component {
     }
 
     if (this.props.questions.isFetching) {
-      return <p className="is-fetching">Fetching Questions</p>
+      return (
+        <div>
+          <p className="is-fetching">Fetching Questions</p>
+          <ProgressBar type="linear" mode="indeterminate" />
+        </div>
+      )
     }
 
     if (!this.props.questions.list) {

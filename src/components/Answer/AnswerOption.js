@@ -1,4 +1,5 @@
 import React, {PropTypes} from "react";
+import {List, ListItem} from "react-toolbox/lib/list";
 
 export default function AnswerOption({id, type, content, onClickHandle}) {
   function onAnswerClick () {
@@ -9,16 +10,13 @@ export default function AnswerOption({id, type, content, onClickHandle}) {
 
   return (
     <div className="answer">
-      <input
-        type="radio"
-        id={type}
-
-        value={type}
-        className="input"
-        name="radioGroup"/>
-      <label className="label" htmlFor={type} onClick={onAnswerClick}>
-        {content}
-      </label>
+      <List selectable ripple>
+        <ListItem
+          onClick={onAnswerClick}
+          avatar={`https://placeimg.com/100/100/animals/sepia?${id}`}
+          caption={`${content}`}
+        />
+      </List>
     </div>
   );
 }
