@@ -26,18 +26,18 @@ export const fetchQuestions = () => {
       id: 1,
       type: 'cat',
       score: 150,
-      time: 10000,
+      time: 20000,
       answers: [
         {
-          title: 'Meow',
+          title: 'Nope',
           id: 0
         },
         {
-          title: 'Woof',
+          title: 'Nuffin',
           id: 1
         },
         {
-          title: 'Hoo',
+          title: 'Boring',
           id: 2
         }
       ]

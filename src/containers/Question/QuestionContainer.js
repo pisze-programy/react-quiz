@@ -2,12 +2,14 @@ import React, {Component, PropTypes} from "react";
 import Question from "../../components/Question/Question";
 import AnswerOption from "../../components/Answer/AnswerOption";
 import QuestionCounter from "../../components/Question/QuestionCounter";
+import TimeProgress from '../../components/Common/TimeProgress';
 
 export default class QuestionContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      stopTimeCounter: false,
       answer: {
         questionId: null,
         answerId: null
@@ -15,6 +17,7 @@ export default class QuestionContainer extends Component {
     };
 
     this.onAnswerClick = this.onAnswerClick.bind(this);
+    this.onTimeProgressEnd = this.onTimeProgressEnd.bind(this);
   }
 
   onAnswerClick(data) {
@@ -22,7 +25,8 @@ export default class QuestionContainer extends Component {
     const answer = Object.assign({}, this.state.answer, {answerId, questionId: this.props.questions.current.id});
 
     this.setState({
-      answer
+      answer,
+      stopTimeCounter: true
     });
 
     this.props.checkAnswerStatus({
@@ -30,11 +34,28 @@ export default class QuestionContainer extends Component {
     });
   }
 
+  onTimeProgressEnd() {
+    // callback after end of time per question
+    // it should call - show false answer status
+
+    this.setState({
+      stopTimeCounter: true
+    })
+  }
+
   render() {
     return (
       <div className="question-container">
           <div>
-            <QuestionCounter total={this.props.questions.list.length} current={this.props.questions.current.id + 1} />
+            <TimeProgress
+              time={this.props.questions.current.time}
+              score={this.props.questions.current.score}
+              stopEvent={this.state.stopTimeCounter}
+              endCallback={this.onTimeProgressEnd} />
+
+            <QuestionCounter
+              total={this.props.questions.list.length}
+              current={this.props.questions.current.id + 1} />
 
             <Question question={this.props.questions.current} />
 
