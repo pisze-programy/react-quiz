@@ -8,7 +8,6 @@ export default class MainLayout extends Component {
         <Header />
 
         <br/>
-        <hr/>
         <br/>
 
         <main>

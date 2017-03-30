@@ -11,22 +11,34 @@ export default class QuestionContainer extends Component {
     this.state = {
       stopTimeCounter: false,
       answer: {
-        questionId: null,
-        answerId: null
+        id: null,
+        time: null,
+        points: null,
+        question: null,
       },
+      timer: {
+        value: 100,
+        time: this.props.questions.current.time,
+        buffer: 100,
+      }
     };
+
+    this.counting = null;
 
     this.onAnswerClick = this.onAnswerClick.bind(this);
     this.onTimeProgressEnd = this.onTimeProgressEnd.bind(this);
+    this.runCounter = this.runCounter.bind(this);
+    this.stopCounting = this.stopCounting.bind(this);
   }
 
   onAnswerClick(data) {
-    const {answerId} = data;
-    const answer = Object.assign({}, this.state.answer, {answerId, questionId: this.props.questions.current.id});
+    const {id} = data;
+    const answer = Object.assign({}, this.state.answer, {id, question: this.props.questions.current});
+
+    this.stopCounting();
 
     this.setState({
       answer,
-      stopTimeCounter: true
     });
 
     this.props.checkAnswerStatus({
@@ -35,21 +47,58 @@ export default class QuestionContainer extends Component {
   }
 
   onTimeProgressEnd() {
+    this.stopCounting();
+
     this.setState({
-      stopTimeCounter: true
+      timer: Object.assign({}, this.state.timer, {
+        time: 0,
+        value: 0,
+      })
     });
 
     this.onAnswerClick({
-      answerId: null
+      id: null,
+      time: this.state.timer.time,
+      points: this.state.timer.points,
     });
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.questions.current.id !== nextProps.questions.current.id) {
       this.setState({
-        stopTimeCounter: false
+        timer: Object.assign({}, this.state.timer, {
+          time: nextProps.questions.current.time,
+          value: 100,
+        })
       });
+
+      this.runCounter();
     }
+  }
+
+  componentWillMount() {
+    this.runCounter();
+  }
+
+  runCounter () {
+    this.counting = setInterval(() => {
+      this.setState({
+        timer: Object.assign({}, this.state.timer, {
+          time: this.state.timer.time - this.state.timer.buffer,
+          value: Math.round((this.state.timer.time / this.props.questions.current.time) * 100)
+        })
+      });
+
+      if (this.state.timer.time <= 0) {
+        return this.onTimeProgressEnd();
+      }
+    }, this.state.timer.buffer);
+  }
+
+  stopCounting() {
+    clearInterval(this.counting);
+
+    this.counting = null;
   }
 
   render() {
@@ -57,10 +106,8 @@ export default class QuestionContainer extends Component {
       <div className="question-container">
           <div>
             <TimeProgress
-              time={this.props.questions.current.time}
-              score={this.props.questions.current.score}
-              stopEvent={this.state.stopTimeCounter}
-              endCallback={this.onTimeProgressEnd} />
+              value={this.state.timer.value}
+              time={this.state.timer.time} />
 
             <QuestionCounter
               total={this.props.questions.list.length}
