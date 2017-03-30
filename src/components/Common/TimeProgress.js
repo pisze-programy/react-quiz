@@ -13,20 +13,18 @@ export default class TimeProgress extends Component {
       counter: null,
     };
 
-    this.counting = null;
-
     this.stopCounting = this.stopCounting.bind(this);
     this.runCounter = this.runCounter.bind(this);
   }
 
   runCounter () {
     this.counting = setInterval(() => {
-      this.setState({seconds: this.state.seconds - this.state.buffer});
-      this.setState({value: Math.round((this.state.seconds / this.props.time) * 100)});
-
-      if (this.state.seconds <= 0) {
+      if (this.state.seconds - this.state.buffer <= 0) {
         this.stopCounting();
       }
+
+      this.setState({seconds: this.state.seconds - this.state.buffer});
+      this.setState({value: Math.round((this.state.seconds / this.props.time) * 100)});
 
     }, this.state.buffer);
   }
@@ -42,6 +40,8 @@ export default class TimeProgress extends Component {
   }
 
   componentWillMount() {
+    this.counting = null;
+
     this.runCounter();
   }
 
@@ -49,17 +49,22 @@ export default class TimeProgress extends Component {
     this.stopCounting();
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.time !== this.props.time || prevProps.score !== this.props.score) {
-      this.setState({
-        seconds: this.props.time,
-        value: 100
-      });
+  componentWillReceiveProps(nextProps) {
+    if (this.props.stopEvent !== nextProps.stopEvent) {
+      if (nextProps.stopEvent) {
+        this.stopCounting();
+      }
 
-      this.runCounter();
+      if (!nextProps.stopEvent) {
+        this.setState({
+          value: 100,
+          seconds: nextProps.time,
+        });
+
+        this.runCounter();
+      }
     }
   }
-
 
   render() {
     return (

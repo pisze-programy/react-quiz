@@ -35,12 +35,21 @@ export default class QuestionContainer extends Component {
   }
 
   onTimeProgressEnd() {
-    // callback after end of time per question
-    // it should call - show false answer status
-
     this.setState({
       stopTimeCounter: true
-    })
+    });
+
+    this.onAnswerClick({
+      answerId: null
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.questions.current.id !== nextProps.questions.current.id) {
+      this.setState({
+        stopTimeCounter: false
+      });
+    }
   }
 
   render() {
