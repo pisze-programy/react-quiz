@@ -1,26 +1,49 @@
-import React, {PropTypes} from "react";
+import React, {Component, PropTypes} from "react";
+import Dialog from 'react-toolbox/lib/dialog/Dialog';
 
-export default function AnswerStatus({answer, closeAction}) {
-  function onCloseClick () {
-    return closeAction();
+export default class AnswerStatus extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      active: true,
+      actions: [
+        { label: 'Close', onClick: this.onCloseClick }
+      ]
+    };
+
+    this.onCloseClick = this.onCloseClick.bind(this);
   }
 
-  if (!Object.keys(answer)) {
-    return <div className="no-answer-yet" />;
+  onCloseClick () {
+    return this.props.closeAction();
   }
 
-  if (!answer.current) {
-    return <div className="status-empty" />;
+  render () {
+    if (!Object.keys(this.props.answer)) {
+      return <div className="no-answer-yet" />;
+    }
+
+    if (!this.props.answer.current) {
+      return <div className="status-empty" />;
+    }
+
+    const status = this.props.answer.current.status ? 'CONGRATULATION, CORRECT' : 'UPS, INCORRECT';
+
+    return (
+      <div>
+        <Dialog
+          actions={this.state.actions}
+          active={this.state.active}
+          onEscKeyDown={this.onCloseClick}
+          onOverlayClick={this.onCloseClick}
+          title={status}>
+
+          <img alt={status} src='https://placeimg.com/640/480/tech?123' />
+        </Dialog>
+      </div>
+    );
   }
-
-  return (
-    <div>
-      {answer.current.status ? <p>CONGRATULATION, CORRECT</p> : <p>SORRY, INCORRECT</p>}
-
-
-      <a className="close" onClick={onCloseClick}>Close</a>
-    </div>
-  );
 }
 
 AnswerStatus.propTypes = {

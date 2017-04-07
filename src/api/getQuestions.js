@@ -5,7 +5,7 @@ export const fetchQuestions = () => {
       id: 0,
       type: 'dog',
       score: 100,
-      time: 5000,
+      time: 2000,
       answers: [
         {
           title: 'Meow',

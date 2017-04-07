@@ -54,3 +54,6 @@ public/*-debug.log
 # Application compiled files
 dist
 build
+
+src/theme.css
+src/theme.js

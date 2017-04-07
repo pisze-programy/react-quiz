@@ -4,7 +4,7 @@ import {List, ListItem} from "react-toolbox/lib/list";
 export default function AnswerOption({id, type, content, onClickHandle}) {
   function onAnswerClick () {
     return onClickHandle({
-      answerId: id
+      id
     });
   }
 

@@ -40,11 +40,43 @@
   },
   "scripts": {
     "start-js": "react-scripts start",
-    "start": "npm-run-all -p start-js",
+    "start": "npm-run-all -s toolbox start-js",
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "npm run test -- --coverage",
     "eject": "react-scripts eject",
-    "toolbox": "react-toolbox-themr"
+    "toolbox": "react-toolbox-themr --config package.json"
+  },
+  "reactToolbox": {
+    "include": [
+      "AUTOCOMPLETE",
+      "AVATAR",
+      "BUTTON",
+      "CARD",
+      "CHECKBOX",
+      "CHIP",
+      "DATE_PICKER",
+      "DIALOG",
+      "DRAWER",
+      "DROPDOWN",
+      "INPUT",
+      "LAYOUT",
+      "LINK",
+      "LIST",
+      "MENU",
+      "NAVIGATION",
+      "OVERLAY",
+      "PROGRESS_BAR",
+      "RADIO",
+      "RIPPLE",
+      "SLIDER",
+      "SNACKBAR",
+      "SWITCH",
+      "TABLE",
+      "TABS",
+      "TIME_PICKER",
+      "TOOLTIP"
+    ],
+    "output": "./src/"
   }
 }

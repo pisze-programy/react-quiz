@@ -37,16 +37,18 @@ export default class QuestionContainer extends Component {
 
     this.stopCounting();
 
-    this.setState({
-      answer,
-    });
+    this.setState({answer});
 
-    this.props.checkAnswerStatus({
-      answer
-    });
+    this.props.checkAnswerStatus({answer});
   }
 
   onTimeProgressEnd() {
+    const answer = Object.assign({}, this.state.answer, {
+      id: null,
+      time: 0,
+      points: 0,
+    });
+
     this.stopCounting();
 
     this.setState({
@@ -56,11 +58,7 @@ export default class QuestionContainer extends Component {
       })
     });
 
-    this.onAnswerClick({
-      id: null,
-      time: this.state.timer.time,
-      points: this.state.timer.points,
-    });
+    this.props.checkAnswerStatus({answer});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,7 +74,11 @@ export default class QuestionContainer extends Component {
     }
   }
 
-  componentWillMount() {
+  componentWillUnmount() {
+    this.stopCounting();
+  }
+
+  componentDidMount() {
     this.runCounter();
   }
 

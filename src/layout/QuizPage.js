@@ -8,25 +8,31 @@ import * as answersActionsCreators from "../actions/answersActions";
 import QuestionContainer from "../containers/Question/QuestionContainer";
 import Score from "../components/Common/Score";
 import AnswerStatus from "../components/Answer/AnswerStatus";
-import ProgressBar from 'react-toolbox/lib/progress_bar';
+import ProgressBar from "react-toolbox/lib/progress_bar";
+import Card from "react-toolbox/lib/card/Card";
+import CardMedia from "react-toolbox/lib/card/CardMedia";
+import CardActions from "react-toolbox/lib/card/CardActions";
+import CardText from "react-toolbox/lib/card/CardText";
+import CardTitle from "react-toolbox/lib/card/CardTitle";
+import Button from "react-toolbox/lib/button/Button";
 
 export class QuizPage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
       quiz: {
-        loading: false,
+        list: [],
+        isFetching: false,
         start: false,
-        finish: false,
-        score: 0,
+        ready: false,
+        score: 0
       },
       questions: {
         list: [],
         isFetching: false,
         error: false,
-        current: {},
-        last: false,
+        current: null,
       },
       answers: {
         list: [],
@@ -37,26 +43,22 @@ export class QuizPage extends Component {
     };
 
     this.startQuiz = this.startQuiz.bind(this);
-    this.finishQuiz = this.finishQuiz.bind(this);
     this.loadQuestions = this.loadQuestions.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.checkAnswerStatus = this.checkAnswerStatus.bind(this);
   }
 
-  componentWillUnmount () {
-    if (this.props.questions.list && this.props.questions.list.length) {
-      this.props.questionsActions.resetQuestions(this.props.questions);
-    }
+  componentWillMount() {
+    this.props.quizActions.loadQuizList(this.state.quiz);
+  }
 
+  componentWillUnmount() {
+    this.props.questionsActions.resetQuestions(this.state.questions);
     this.props.quizActions.resetQuiz(this.state.quiz);
   }
 
   startQuiz() {
-    return this.props.quizActions.startQuiz(this.state.quiz);
-  }
-
-  finishQuiz() {
-    return this.props.quizActions.finishQuiz(this.state.quiz);
+    return this.props.quizActions.startQuiz(this.props.quiz);
   }
 
   loadQuestions() {
@@ -84,42 +86,55 @@ export class QuizPage extends Component {
       }
     );
 
-    return this.props.answersActions.statusAnswer(prepare);
+    this.props.answersActions.statusAnswer(prepare);
   }
 
   render() {
-    if (this.props.quiz.finish) {
-      return <div className="finish">Finish</div>;
+    if (!this.props.quiz.ready) {
+      return (
+        <div>
+          <p>Special page loader</p>
+          <ProgressBar type="linear" mode="indeterminate"/>
+        </div>
+      )
     }
 
-    if (!this.props.quiz.start) {
-      return <a className="start-quiz" onClick={this.startQuiz}>Start quiz</a>
-    }
-
-    if (this.props.quiz.loading) {
+    if (this.props.quiz.isFetching || this.props.questions.isFetching || this.props.answers.isFetching) {
       return (
         <div>
           <p className="loading">Loading...</p>
-          <ProgressBar type="linear" mode="indeterminate" />
+          <ProgressBar type="linear" mode="indeterminate"/>
         </div>
       )
     }
 
-    if (this.props.questions.error) {
+    if (this.props.quiz.error || this.props.questions.error || this.props.answers.error) {
       return (<p className="error">Error while fetching data</p>)
     }
 
-    if (this.props.questions.isFetching) {
+    if (!this.props.quiz.start && this.props.quiz.list && this.props.quiz.list.length) {
       return (
         <div>
-          <p className="is-fetching">Fetching Questions</p>
-          <ProgressBar type="linear" mode="indeterminate" />
+          {this.props.quiz.list.map(quiz => {
+            return (
+              <Card key={quiz.id}>
+                <CardMedia
+                  aspectRatio="wide"
+                  image="https://placeimg.com/800/450/animals?23" />
+                <CardTitle title={quiz.title} />
+                <CardText>{quiz.description}</CardText>
+                <CardActions>
+                  <Button label="Start Quiz" onClick={this.startQuiz}/>
+                </CardActions>
+              </Card>
+            )
+          })}
         </div>
       )
     }
 
-    if (!this.props.questions.list) {
-      return <a className="fetch-questions" onClick={this.loadQuestions}>Fetch Questions</a>
+    if (!this.props.questions.list || !this.props.questions.list.length) {
+      return <a className="fetch-questions" onClick={this.loadQuestions}>Fetch Questions - level 1</a>
     }
 
     if (!this.props.questions.current) {
@@ -133,16 +148,16 @@ export class QuizPage extends Component {
 
     return (
       <div className="quiz-page">
-        <Score points={this.props.questions.current.score} />
+        <Score points={this.props.questions.current.score}/>
 
         <QuestionContainer
           questions={this.props.questions}
-          checkAnswerStatus={this.checkAnswerStatus} />
+          checkAnswerStatus={this.checkAnswerStatus}/>
 
         {this.props.answers &&
-          <AnswerStatus
-            answer={this.props.answers}
-            closeAction={this.nextQuestion} />
+        <AnswerStatus
+          answer={this.props.answers}
+          closeAction={this.nextQuestion}/>
         }
       </div>
     );

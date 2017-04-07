@@ -6,8 +6,8 @@ import {browserHistory, Router} from "react-router";
 import routes from "./routes";
 import "./styles/application.css";
 
-import "./toolbox/theme.css";
-import theme from './toolbox/theme';
+import "./theme.css";
+import theme from './theme';
 import ThemeProvider from 'react-toolbox/lib/ThemeProvider';
 
 const store = configureStore();

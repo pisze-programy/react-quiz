@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {Tab, Tabs} from 'react-toolbox/lib/tabs';
+import Tab from 'react-toolbox/lib/tabs/Tab';
+import Tabs from 'react-toolbox/lib/tabs/Tabs';
 import {browserHistory} from 'react-router';
 
 export default class Header extends Component {

@@ -18,7 +18,7 @@ export default function questionsReducer(state = {}, action) {
         current: action.questions[0]
       };
 
-      return Object.assign({}, action, prepare);
+      return Object.assign({}, state, prepare);
 
     case types.FAILURE_LOAD_QUESTIONS:
       prepare = {
@@ -26,14 +26,10 @@ export default function questionsReducer(state = {}, action) {
         isFetching: false
       };
 
-      return Object.assign({}, action, prepare);
+      return Object.assign({}, state, prepare);
 
     case types.RESET_QUESTIONS:
-      prepare = {
-        current: state.list[0]
-      };
-
-      return Object.assign({}, state, prepare);
+      return Object.assign({}, action.payload, prepare);
 
     case types.NEXT_QUESTION:
       const currentIndex = state.list.indexOf(state.current);
