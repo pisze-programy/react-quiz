@@ -4,7 +4,7 @@ export const fetchQuestions = () => {
       title: 'What sound does a dog make?',
       id: 0,
       type: 'dog',
-      score: 100,
+      score: 1000,
       time: 2000,
       answers: [
         {
@@ -25,7 +25,7 @@ export const fetchQuestions = () => {
       title: 'What sound does a cat make?',
       id: 1,
       type: 'cat',
-      score: 150,
+      score: 10000,
       time: 20000,
       answers: [
         {

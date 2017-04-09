@@ -6,7 +6,6 @@ export default function TimeProgress({time, value}) {
     <div>
       <br/>
       <ProgressBar type="linear" mode="determinate" value={value} />
-
       Time left: {time} ms
       <br/>
     </div>

@@ -6,8 +6,7 @@ import * as questionsActionsCreators from "../actions/questionsActions";
 import * as quizActionsCreators from "../actions/quizActions";
 import * as answersActionsCreators from "../actions/answersActions";
 import QuestionContainer from "../containers/Question/QuestionContainer";
-import Score from "../components/Common/Score";
-import AnswerStatus from "../components/Answer/AnswerStatus";
+
 import ProgressBar from "react-toolbox/lib/progress_bar";
 import Card from "react-toolbox/lib/card/Card";
 import CardMedia from "react-toolbox/lib/card/CardMedia";
@@ -72,7 +71,7 @@ export class QuizPage extends Component {
   }
 
   checkAnswerStatus(data) {
-    if (this.props.answers.current) return;
+    console.log('data', data);
 
     const prepare = Object.assign(
       {},
@@ -80,9 +79,11 @@ export class QuizPage extends Component {
       this.props.answers,
       {
         current: {
-          answerId: data.answer.answerId,
-          questionId: data.answer.questionId,
-        },
+          id: data.answer.id,
+          points: data.answer.points,
+          time: data.answer.time,
+          question: data.answer.question,
+        }
       }
     );
 
@@ -148,17 +149,12 @@ export class QuizPage extends Component {
 
     return (
       <div className="quiz-page">
-        <Score points={this.props.questions.current.score}/>
 
         <QuestionContainer
+          nextQuestion={this.nextQuestion}
+          answers={this.props.answers}
           questions={this.props.questions}
           checkAnswerStatus={this.checkAnswerStatus}/>
-
-        {this.props.answers &&
-        <AnswerStatus
-          answer={this.props.answers}
-          closeAction={this.nextQuestion}/>
-        }
       </div>
     );
   }
