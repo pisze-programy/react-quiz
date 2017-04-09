@@ -71,8 +71,6 @@ export class QuizPage extends Component {
   }
 
   checkAnswerStatus(data) {
-    console.log('data', data);
-
     const prepare = Object.assign(
       {},
       this.state.answers,
