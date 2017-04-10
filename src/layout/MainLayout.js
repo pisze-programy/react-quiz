@@ -5,14 +5,16 @@ export default class MainLayout extends Component {
   render() {
     return (
       <div className="about-page">
-          <Header />
+        <Header />
 
-          <br/>
-          <br/>
+        <br/>
+        <br/>
 
-          <main>
+        <main className="row">
+          <div className="small-12">
             {this.props.children}
-          </main>
+          </div>
+        </main>
       </div>
     );
   }

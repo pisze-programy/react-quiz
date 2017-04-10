@@ -113,19 +113,22 @@ export class QuizPage extends Component {
 
     if (!this.props.quiz.start && this.props.quiz.list && this.props.quiz.list.length) {
       return (
-        <div>
+        <div className="row">
           {this.props.quiz.list.map(quiz => {
             return (
-              <Card key={quiz.id}>
-                <CardMedia
-                  aspectRatio="wide"
-                  image="https://placeimg.com/800/450/animals?23" />
-                <CardTitle title={quiz.title} />
-                <CardText>{quiz.description}</CardText>
-                <CardActions>
-                  <Button label="Start Quiz" onClick={this.startQuiz}/>
-                </CardActions>
-              </Card>
+              <div key={quiz.id} className="small-12 medium-6 large-4 column">
+                <Card>
+                  <CardMedia
+                    onClick={this.startQuiz}
+                    aspectRatio="wide"
+                    image={`https://placeimg.com/800/450/animals?${quiz.id}`} />
+                  <CardTitle title={quiz.title} />
+                  <CardText>{quiz.description}</CardText>
+                  <CardActions>
+                    <Button label="Start Quiz" onClick={this.startQuiz}/>
+                  </CardActions>
+                </Card>
+              </div>
             )
           })}
         </div>

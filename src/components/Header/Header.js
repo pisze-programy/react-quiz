@@ -31,15 +31,17 @@ export default class Header extends Component {
   render() {
 
     return (
-      <div>
-        <h2>React Quiz example:</h2>
-        <br/>
+      <div className="row">
+        <div className="column small-12">
+          <h2>React Quiz example:</h2>
+          <br/>
 
-        <Tabs index={this.state.index} onChange={this.handleTabChange} fixed>
-          {this.state.list.map((item, index) => {
-            return <Tab key={index} label={item.label} />
-          })}
-        </Tabs>
+          <Tabs index={this.state.index} onChange={this.handleTabChange} fixed>
+            {this.state.list.map((item, index) => {
+              return <Tab key={index} label={item.label} />
+            })}
+          </Tabs>
+        </div>
       </div>
     )
   }

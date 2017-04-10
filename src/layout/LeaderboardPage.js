@@ -49,17 +49,23 @@ export class LeaderboardPage extends Component {
 
         <br/>
 
+        TOP 5:
+
+        <br/>
+
         <table>
-          <tbody>
+            <tbody>
             {this.props.leaderboard.list.map(element => {
-              return <tr key={element.id}>
-                <th>{element.id}</th>
-                <th>{element.name}</th>
-                <th>{element.points}</th>
-              </tr>
+              return (
+                <tr key={element.id}>
+                  <th>{element.id}</th>
+                  <th>{element.name}</th>
+                  <th>{element.points}</th>
+                </tr>
+              )
             })}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
       </div>
     );
   }
