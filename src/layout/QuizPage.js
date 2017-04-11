@@ -1,10 +1,11 @@
 import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
-import {Link} from "react-router";
+import {browserHistory} from 'react-router';
 import {bindActionCreators} from "redux";
 import * as questionsActionsCreators from "../actions/questionsActions";
 import * as quizActionsCreators from "../actions/quizActions";
 import * as answersActionsCreators from "../actions/answersActions";
+import * as navActionsCreators from "../actions/navActions";
 import QuestionContainer from "../containers/Question/QuestionContainer";
 
 import ProgressBar from "react-toolbox/lib/progress_bar";
@@ -48,6 +49,7 @@ export class QuizPage extends Component {
     this.loadQuestions = this.loadQuestions.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.checkAnswerStatus = this.checkAnswerStatus.bind(this);
+    this.goToLeaderBoard = this.goToLeaderBoard.bind(this);
   }
 
   componentWillMount() {
@@ -77,6 +79,19 @@ export class QuizPage extends Component {
     this.props.answersActions.clearAnswer(this.props.answers);
 
     return this.props.questionsActions.nextQuestion(this.props.questions);
+  }
+
+  goToLeaderBoard() {
+    this.props.nav.list.map((element, index) => {
+      if (element.href === '/leaderboard') {
+        browserHistory.push('/leaderboard');
+
+        return this.props.navActions.setNavActive(Object.assign({}, this.props.nav, {index}));
+      }
+
+      return false;
+    });
+
   }
 
   checkAnswerStatus(data) {
@@ -168,7 +183,7 @@ export class QuizPage extends Component {
           <div>
             <a>Go to next level</a>{/*onClick={this.nextLevel}*/}
           </div>
-          <Link to="/leaderboard">Show Leaderboard</Link>
+          <a onClick={this.goToLeaderBoard}>Show Leaderboard</a>
         </div>
       )
     }
@@ -192,6 +207,7 @@ QuizPage.propTypes = {
   questions: PropTypes.object.isRequired,
   answers: PropTypes.object.isRequired,
   quiz: PropTypes.object.isRequired,
+  nav: PropTypes.object.isRequired,
 };
 
 /* istanbul ignore next */
@@ -200,6 +216,7 @@ function mapStateToProps(state) {
     questions: state.questions,
     answers: state.answers,
     quiz: state.quiz,
+    nav: state.nav,
   }
 }
 
@@ -209,6 +226,7 @@ function mapDispatchToProps(dispatch) {
     questionsActions: bindActionCreators(questionsActionsCreators, dispatch),
     answersActions: bindActionCreators(answersActionsCreators, dispatch),
     quizActions: bindActionCreators(quizActionsCreators, dispatch),
+    navActions: bindActionCreators(navActionsCreators, dispatch),
   };
 }
 

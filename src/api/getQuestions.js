@@ -1,6 +1,4 @@
 export const fetchQuestions = (payload) => {
-  console.log(payload);
-
   if (payload.level === 0) {
     return [
       {

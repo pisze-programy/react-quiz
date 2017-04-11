@@ -1,10 +1,6 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
 
 export default class LoginPage extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="row">
@@ -31,4 +27,4 @@ export default class LoginPage extends Component {
   }
 }
 
-  LoginPage.propTypes = {};
+LoginPage.propTypes = {};
