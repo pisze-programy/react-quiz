@@ -23,14 +23,17 @@ export class QuizPage extends Component {
       quiz: {
         list: [],
         isFetching: false,
+        error: false,
         start: false,
         ready: false,
+        current: {},
         score: 0
       },
       questions: {
         list: [],
         isFetching: false,
         error: false,
+        level: null,
         current: null,
       },
       answers: {
@@ -56,12 +59,18 @@ export class QuizPage extends Component {
     this.props.quizActions.resetQuiz(this.state.quiz);
   }
 
-  startQuiz() {
-    return this.props.quizActions.startQuiz(this.props.quiz);
+  startQuiz(id) {
+    const prepare = Object.assign({}, this.state.quiz, this.props.quiz, {current: {id}});
+
+    this.props.questionsActions.resetActiveQuestionsLevel(this.props.questions);
+
+    return this.props.quizActions.startQuiz(prepare);
   }
 
-  loadQuestions() {
-    return this.props.questionsActions.loadQuestions(this.state.questions);
+  loadQuestions(id) {
+    const prepare = Object.assign({}, this.state.questions, this.props.questions, {level: id});
+
+    return this.props.questionsActions.loadQuestions(prepare);
   }
 
   nextQuestion() {
@@ -119,13 +128,13 @@ export class QuizPage extends Component {
               <div key={quiz.id} className="small-12 medium-6 large-4 column">
                 <Card>
                   <CardMedia
-                    onClick={this.startQuiz}
+                    onClick={() => this.startQuiz(quiz.id)}
                     aspectRatio="wide"
                     image={`https://placeimg.com/800/450/animals?${quiz.id}`} />
                   <CardTitle title={quiz.title} />
                   <CardText>{quiz.description}</CardText>
                   <CardActions>
-                    <Button label="Start Quiz" onClick={this.startQuiz}/>
+                    <Button label="Start Quiz" onClick={() => this.startQuiz(quiz.id)}/>
                   </CardActions>
                 </Card>
               </div>
@@ -135,14 +144,30 @@ export class QuizPage extends Component {
       )
     }
 
-    if (!this.props.questions.list || !this.props.questions.list.length) {
-      return <a className="fetch-questions" onClick={this.loadQuestions}>Fetch Questions - level 1</a>
+    if (this.props.questions.level === null && this.props.quiz.list && this.props.quiz.list.length) {
+      return(
+        <div>
+          {this.props.quiz.list[this.props.quiz.current.id].levels.map(level => {
+            return (
+              <div key={level.id}>
+                <button type="button" className="button primary" disabled={!level.unlocked} onClick={() => this.loadQuestions(level.id)}>Level: {level.id}</button>
+              </div>
+            )
+          })}
+        </div>
+      )
     }
 
     if (!this.props.questions.current) {
       return (
         <div className="no-more-questions">
           <p>No more questions</p>
+          <div>
+            <a onClick={() => this.startQuiz(this.props.quiz.current.id)}>Back to level list</a>
+          </div>
+          <div>
+            <a>Go to next level</a>{/*onClick={this.nextLevel}*/}
+          </div>
           <Link to="/leaderboard">Show Leaderboard</Link>
         </div>
       )
@@ -150,7 +175,6 @@ export class QuizPage extends Component {
 
     return (
       <div className="quiz-page">
-
         <QuestionContainer
           nextQuestion={this.nextQuestion}
           answers={this.props.answers}

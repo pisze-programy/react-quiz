@@ -11,8 +11,10 @@ export default class Header extends Component {
       index: 0,
       list: [
         {label: 'Quiz', href: '/'},
-        {label: 'About', href: '/about'},
         {label: 'Leaderboard', href: '/leaderboard'},
+        {label: 'About', href: '/about'},
+        {label: 'Login', href: '/login'},
+        {label: 'Register', href: '/register'},
       ]
     };
     this.handleTabChange = this.handleTabChange.bind(this);

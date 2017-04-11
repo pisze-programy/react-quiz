@@ -8,7 +8,7 @@ export default class AnswerStatus extends Component {
     this.state = {
       active: true,
       actions: [
-        { label: 'Close', onClick: this.onCloseClick }
+        { label: 'Close', onClick: this.onCloseClick.bind(this) }
       ]
     };
 

@@ -11,7 +11,7 @@ export default class MainLayout extends Component {
         <br/>
 
         <main className="row">
-          <div className="small-12">
+          <div className="small-12 column">
             {this.props.children}
           </div>
         </main>

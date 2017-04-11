@@ -40,6 +40,13 @@ export default function questionsReducer(state = {}, action) {
 
       return Object.assign({}, state, prepare);
 
+    case types.RESET_ACTIVE_QUESTIONS_LEVEL:
+      prepare = {
+        level: null
+      };
+
+      return Object.assign({}, action.payload, prepare);
+
     default:
       return state;
   }

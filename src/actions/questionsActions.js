@@ -19,3 +19,7 @@ export function resetQuestions(payload) {
 export function nextQuestion(payload) {
   return { type: types.NEXT_QUESTION, payload };
 }
+
+export function resetActiveQuestionsLevel(payload) {
+  return { type: types.RESET_ACTIVE_QUESTIONS_LEVEL, payload };
+}

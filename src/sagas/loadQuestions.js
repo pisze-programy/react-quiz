@@ -2,9 +2,9 @@ import {call, put, takeEvery} from "redux-saga/effects";
 import {fetchQuestions} from "../api/getQuestions";
 import * as types from "../actions/actionTypes";
 
-export function* loadQuestions() {
+export function* loadQuestions(action) {
   try {
-    const questions = yield call(fetchQuestions);
+    const questions = yield call(fetchQuestions, action.payload);
 
     yield put({type: types.RECEIVED_QUESTIONS, questions: questions});
   } catch (error) {
