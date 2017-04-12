@@ -58,12 +58,15 @@ export class QuizPage extends Component {
 
   componentWillUnmount() {
     this.props.questionsActions.resetQuestions(this.state.questions);
+    this.props.answersActions.clearAnswer(this.props.answers);
+    this.props.answersActions.resetAnswers(this.props.answers);
     this.props.quizActions.resetQuiz(this.state.quiz);
   }
 
   startQuiz(id) {
     const prepare = Object.assign({}, this.state.quiz, this.props.quiz, {current: {id}});
 
+    this.props.answersActions.resetAnswers(this.props.answers);
     this.props.questionsActions.resetActiveQuestionsLevel(this.props.questions);
 
     return this.props.quizActions.startQuiz(prepare);
@@ -91,7 +94,6 @@ export class QuizPage extends Component {
 
       return false;
     });
-
   }
 
   checkAnswerStatus(data) {
@@ -174,8 +176,19 @@ export class QuizPage extends Component {
     }
 
     if (!this.props.questions.current) {
+      let points = 0;
+      let total = 0;
+
+      this.props.answers.list.map(answer => {
+        points += answer.points;
+        total += answer.question.score;
+
+        return answer;
+      });
+
       return (
         <div className="no-more-questions">
+          <p>You received a {points} of total {total} score</p>
           <p>No more questions</p>
           <div>
             <a onClick={() => this.startQuiz(this.props.quiz.current.id)}>Back to level list</a>

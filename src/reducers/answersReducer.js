@@ -41,6 +41,12 @@ export default function answersReducer(state = {}, action) {
 
       return Object.assign({}, action.payload, prepare);
 
+    case types.RESET_ANSWERS:
+      prepare = {
+        list: []
+      };
+
+      return Object.assign({}, action.payload, prepare);
     default:
       return state;
   }
