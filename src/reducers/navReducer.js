@@ -5,8 +5,6 @@ export default function navReducer(state = {}, action) {
 
   switch (action.type) {
     case types.SET_NAV_ACTIVE:
-      console.log('nav', action.payload);
-
       return Object.assign({}, action.payload, prepare);
 
     case types.CLEAR_NAV_ACTIVE:

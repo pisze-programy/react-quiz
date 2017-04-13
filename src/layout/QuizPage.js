@@ -27,6 +27,7 @@ export class QuizPage extends Component {
         error: false,
         start: false,
         ready: false,
+        levels: [],
         current: {},
         score: 0
       },
@@ -45,11 +46,11 @@ export class QuizPage extends Component {
       }
     };
 
-    this.startQuiz = this.startQuiz.bind(this);
+    this.loadQuizLevels = this.loadQuizLevels.bind(this);
     this.loadQuestions = this.loadQuestions.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.checkAnswerStatus = this.checkAnswerStatus.bind(this);
-    this.goToLeaderBoard = this.goToLeaderBoard.bind(this);
+    this.goToNav = this.goToNav.bind(this);
   }
 
   componentWillMount() {
@@ -63,13 +64,13 @@ export class QuizPage extends Component {
     this.props.quizActions.resetQuiz(this.state.quiz);
   }
 
-  startQuiz(id) {
+  loadQuizLevels(id) {
     const prepare = Object.assign({}, this.state.quiz, this.props.quiz, {current: {id}});
 
     this.props.answersActions.resetAnswers(this.props.answers);
     this.props.questionsActions.resetActiveQuestionsLevel(this.props.questions);
 
-    return this.props.quizActions.startQuiz(prepare);
+    return this.props.quizActions.loadQuizLevels(prepare);
   }
 
   loadQuestions(id) {
@@ -84,10 +85,10 @@ export class QuizPage extends Component {
     return this.props.questionsActions.nextQuestion(this.props.questions);
   }
 
-  goToLeaderBoard() {
+  goToNav(href) {
     this.props.nav.list.map((element, index) => {
-      if (element.href === '/leaderboard') {
-        browserHistory.push('/leaderboard');
+      if (element.href === href) {
+        browserHistory.push(href);
 
         return this.props.navActions.setNavActive(Object.assign({}, this.props.nav, {index}));
       }
@@ -137,34 +138,10 @@ export class QuizPage extends Component {
       return (<p className="error">Error while fetching data</p>)
     }
 
-    if (!this.props.quiz.start && this.props.quiz.list && this.props.quiz.list.length) {
-      return (
-        <div className="row">
-          {this.props.quiz.list.map(quiz => {
-            return (
-              <div key={quiz.id} className="small-12 medium-6 large-4 column">
-                <Card>
-                  <CardMedia
-                    onClick={() => this.startQuiz(quiz.id)}
-                    aspectRatio="wide"
-                    image={`https://placeimg.com/800/450/animals?${quiz.id}`} />
-                  <CardTitle title={quiz.title} />
-                  <CardText>{quiz.description}</CardText>
-                  <CardActions>
-                    <Button label="Start Quiz" onClick={() => this.startQuiz(quiz.id)}/>
-                  </CardActions>
-                </Card>
-              </div>
-            )
-          })}
-        </div>
-      )
-    }
-
-    if (this.props.questions.level === null && this.props.quiz.list && this.props.quiz.list.length) {
+    if (this.props.questions.level === null && this.props.quiz.levels.length) {
       return(
         <div>
-          {this.props.quiz.list[this.props.quiz.current.id].levels.map(level => {
+          {this.props.quiz.levels.map(level => {
             return (
               <div key={level.id}>
                 <button type="button" className="button primary" disabled={!level.unlocked} onClick={() => this.loadQuestions(level.id)}>Level: {level.id}</button>
@@ -175,7 +152,7 @@ export class QuizPage extends Component {
       )
     }
 
-    if (!this.props.questions.current) {
+    if (this.props.answers.list && this.props.answers.list.length && !this.props.questions.current) {
       let points = 0;
       let total = 0;
 
@@ -188,26 +165,61 @@ export class QuizPage extends Component {
 
       return (
         <div className="no-more-questions">
-          <p>You received a {points} of total {total} score</p>
-          <p>No more questions</p>
-          <div>
-            <a onClick={() => this.startQuiz(this.props.quiz.current.id)}>Back to level list</a>
+          <div className="row">
+            <div className="small-12 column">
+              <p>You received a {points} of total {total} score</p>
+              <p>No more questions</p>
+            </div>
+            <div className="small-12 column">
+              <div className="row">
+                <div className="small-12 medium-6 columns">
+                  <a onClick={() => this.loadQuizLevels(this.props.quiz.current.id)}>Back to level list</a>
+                </div>
+                <div className="small-12 medium-6 columns large-text-right">
+                  <a>Go to next level</a>{/*onClick={this.nextLevel}*/}
+                </div>
+              </div>
+            </div>
+            <div className="small-12 column">
+              <hr/>
+              <a onClick={() => this.goToNav('/leaderboard')}>Show Leaderboard</a>
+            </div>
           </div>
-          <div>
-            <a>Go to next level</a>{/*onClick={this.nextLevel}*/}
-          </div>
-          <a onClick={this.goToLeaderBoard}>Show Leaderboard</a>
         </div>
       )
     }
 
-    return (
-      <div className="quiz-page">
+    if (this.props.questions.list && this.props.questions.list.length) {
+      return (
         <QuestionContainer
           nextQuestion={this.nextQuestion}
           answers={this.props.answers}
           questions={this.props.questions}
           checkAnswerStatus={this.checkAnswerStatus}/>
+      )
+    }
+
+    return (
+      <div className="quiz-page">
+        <div className="row">
+          {this.props.quiz.list.map(quiz => {
+            return (
+              <div key={quiz.id} className="small-12 medium-6 large-4 column">
+                <Card>
+                  <CardMedia
+                    onClick={() => this.loadQuizLevels(quiz.id)}
+                    aspectRatio="wide"
+                    image={`https://placeimg.com/800/450/animals?${quiz.id}`} />
+                  <CardTitle title={quiz.title} />
+                  <CardText>{quiz.description}</CardText>
+                  <CardActions>
+                    <Button label="Start Quiz" onClick={() => this.loadQuizLevels(quiz.id)}/>
+                  </CardActions>
+                </Card>
+              </div>
+            )
+          })}
+        </div>
       </div>
     );
   }
