@@ -54,7 +54,7 @@ export class LeaderboardPage extends Component {
         <br/>
 
         <table>
-            <tbody>
+          <tbody>
             {this.props.leaderboard.list.map(element => {
               return (
                 <tr key={element.id}>
@@ -64,8 +64,8 @@ export class LeaderboardPage extends Component {
                 </tr>
               )
             })}
-            </tbody>
-          </table>
+          </tbody>
+        </table>
       </div>
     );
   }

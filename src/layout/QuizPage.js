@@ -7,6 +7,7 @@ import * as quizActionsCreators from "../actions/quizActions";
 import * as answersActionsCreators from "../actions/answersActions";
 import * as navActionsCreators from "../actions/navActions";
 import QuestionContainer from "../containers/Question/QuestionContainer";
+import AnswersList from "../components/Answer/AnswerList";
 
 import ProgressBar from "react-toolbox/lib/progress_bar";
 import Card from "react-toolbox/lib/card/Card";
@@ -138,12 +139,13 @@ export class QuizPage extends Component {
     }
 
     if (this.props.questions.level === null && this.props.quiz.levels.length) {
-      return(
+      return (
         <div>
           {this.props.quiz.levels.map(level => {
             return (
               <div key={level.id}>
-                <button type="button" className="button primary" disabled={!level.unlocked} onClick={() => this.loadQuestions(level.id)}>Level: {level.id}</button>
+                <button type="button" className="button primary" disabled={!level.unlocked}
+                        onClick={() => this.loadQuestions(level.id)}>Level: {level.id}</button>
               </div>
             )
           })}
@@ -169,6 +171,9 @@ export class QuizPage extends Component {
               <p>You received a {points} of total {total} score</p>
               <p>No more questions</p>
             </div>
+
+            <hr/>
+
             <div className="small-12 column">
               <div className="row">
                 <div className="small-12 medium-6 columns">
@@ -178,9 +183,14 @@ export class QuizPage extends Component {
                   <a>Go to next level</a>{/*onClick={this.nextLevel}*/}
                 </div>
               </div>
+
+              <AnswersList answers={this.props.answers.list}/>
+
             </div>
+
+            <hr/>
+
             <div className="small-12 column">
-              <hr/>
               <a onClick={() => this.goToNav('/leaderboard')}>Show Leaderboard</a>
             </div>
           </div>
@@ -208,8 +218,8 @@ export class QuizPage extends Component {
                   <CardMedia
                     onClick={() => this.loadQuizLevels(quiz.id)}
                     aspectRatio="wide"
-                    image={`https://placeimg.com/800/450/animals?${quiz.id}`} />
-                  <CardTitle title={quiz.title} />
+                    image={`https://placeimg.com/800/450/animals?${quiz.id}`}/>
+                  <CardTitle title={quiz.title}/>
                   <CardText>{quiz.description}</CardText>
                   <CardActions>
                     <Button label="Start Quiz" onClick={() => this.loadQuizLevels(quiz.id)}/>

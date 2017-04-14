@@ -9,3 +9,15 @@
 hr {
   margin: 1.5rem 0;
 }
+
+th {
+  &.bad-answer {
+    background: #f44336;
+    color: #f44336;
+  }
+
+  &.good-answer {
+    background: #8bc34a;
+    color: #8bc34a;
+  }
+}
