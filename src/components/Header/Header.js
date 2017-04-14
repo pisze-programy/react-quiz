@@ -1,14 +1,14 @@
 import React, {Component, PropTypes} from "react";
-import Tab from 'react-toolbox/lib/tabs/Tab';
-import Tabs from 'react-toolbox/lib/tabs/Tabs';
-import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {browserHistory} from 'react-router';
 import * as navActionsCreators from "../../actions/navActions";
+import Tab from 'react-toolbox/lib/tabs/Tab';
+import Tabs from 'react-toolbox/lib/tabs/Tabs';
 
 export class Header extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       index: 0,
@@ -16,14 +16,15 @@ export class Header extends Component {
         {label: 'Quiz', href: '/'},
         {label: 'Leaderboard', href: '/leaderboard'},
         {label: 'About', href: '/about'},
-        {label: 'Login', href: '/login'},
-        {label: 'Register', href: '/register'},
+        {label: 'Profile', href: '/profile'},
       ]
     };
+
     this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   componentWillMount() {
+    /* Set active nav element before component mounted */
     this.state.list.map((element, index) => {
       if (element.href === location.pathname) {
         return this.props.navActions.setNavActive(Object.assign({}, this.state, {index}));
@@ -75,12 +76,14 @@ export class Header extends Component {
 
 Header.propTypes = {
   nav: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
     nav: state.nav,
+    user: state.user,
   }
 }
 

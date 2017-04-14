@@ -57,3 +57,5 @@ build
 
 src/theme.css
 src/theme.js
+
+src/**/*.css

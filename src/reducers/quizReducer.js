@@ -32,7 +32,6 @@ export default function quizReducer(state = {}, action) {
 
       return Object.assign({}, state, prepare);
 
-
     case types.FETCH_QUIZ_LEVELS:
       prepare = {
         isFetching: true

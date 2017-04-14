@@ -4,13 +4,15 @@ import questions from "./questionsReducer";
 import answers from "./answersReducer";
 import leaderboard from "./leaderboardReducer";
 import nav from "./navReducer";
+import user from "./userReducer";
 
 const rootReducer = combineReducers({
   quiz,
   questions,
   answers,
   leaderboard,
-  nav
+  nav,
+  user
 });
 
 export default rootReducer;

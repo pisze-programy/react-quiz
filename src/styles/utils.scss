@@ -1,0 +1,11 @@
+.spacer {
+  @for $i from 1 through 5 {
+    &.s#{$i} {
+      margin-top: #{$i}rem;
+    }
+  }
+}
+
+hr {
+  margin: 1.5rem 0;
+}

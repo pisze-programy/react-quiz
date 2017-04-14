@@ -4,8 +4,7 @@ import QuizPage from "./layout/QuizPage";
 import AboutPage from "./layout/AboutPage";
 import MainLayout from "./layout/MainLayout";
 import LeaderboardPage from "./layout/LeaderboardPage";
-import RegisterPage from "./layout/RegisterPage";
-import LoginPage from "./layout/LoginPage";
+import ProfilePage from "./layout/ProfilePage";
 import NotFoundPage from "./layout/NotFoundPage";
 
 const routes = (
@@ -14,8 +13,7 @@ const routes = (
       <Route path="/" component={QuizPage}/>
       <Route path="/about" component={AboutPage}/>
       <Route path="/leaderboard" component={LeaderboardPage}/>
-      <Route path="/register" component={RegisterPage}/>
-      <Route path="/login" component={LoginPage}/>
+      <Route path="/profile" component={ProfilePage}/>
       <Route path='*' component={NotFoundPage} />
     </Route>
   </div>

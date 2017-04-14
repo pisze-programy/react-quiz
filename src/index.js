@@ -4,10 +4,11 @@ import configureStore from "./store";
 import {Provider} from "react-redux";
 import {browserHistory, Router} from "react-router";
 import routes from "./routes";
-import "./styles/application.css";
 
 import "./theme.css";
 import "../node_modules/foundation-sites/dist/css/foundation-flex.css";
+import "./styles/application.css";
+
 import theme from './theme';
 import ThemeProvider from 'react-toolbox/lib/ThemeProvider';
 

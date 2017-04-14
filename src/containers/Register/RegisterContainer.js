@@ -1,6 +1,23 @@
-import React, {Component} from "react";
+import React, {Component, PropTypes} from "react";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as navActionsCreators from "../../actions/navActions";
+import * as userActionsCreators from "../../actions/userActions";
 
-export default class Register extends Component {
+export default class RegisterContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state= {
+      user: {
+        username: null,
+        password: null,
+        isFetching: false,
+        error: null,
+      }
+    };
+  }
+
   render() {
     return (
       <div className="register-page">
@@ -72,4 +89,28 @@ export default class Register extends Component {
   }
 }
 
-Register.propTypes = {};
+RegisterContainer.propTypes = {
+  nav: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+};
+
+/* istanbul ignore next */
+function mapStateToProps(state) {
+  return {
+    nav: state.nav,
+    user: state.user,
+  }
+}
+
+/* istanbul ignore next */
+function mapDispatchToProps(dispatch) {
+  return {
+    navActions: bindActionCreators(navActionsCreators, dispatch),
+    userActions: bindActionCreators(userActionsCreators, dispatch),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RegisterContainer)

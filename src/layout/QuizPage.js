@@ -59,7 +59,6 @@ export class QuizPage extends Component {
 
   componentWillUnmount() {
     this.props.questionsActions.resetQuestions(this.state.questions);
-    this.props.answersActions.clearAnswer(this.props.answers);
     this.props.answersActions.resetAnswers(this.props.answers);
     this.props.quizActions.resetQuiz(this.state.quiz);
   }
