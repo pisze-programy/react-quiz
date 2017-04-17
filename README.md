@@ -15,7 +15,7 @@ $ yarn
 $ npm start
 ```
 
-### 3. Open borwser
+### 3. Open browser
 ```
 localhost:3000
 ```
