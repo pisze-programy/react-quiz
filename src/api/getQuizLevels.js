@@ -3,26 +3,32 @@ export const fetchQuizLevels = () => {
     {
       id: 0,
       unlocked: true,
+      coverage: 50
     },
     {
       id: 1,
-      unlocked: false
+      unlocked: true,
+      coverage: 100
     },
     {
       id: 2,
-      unlocked: false
+      unlocked: false,
+      coverage: 50
     },
     {
       id: 3,
-      unlocked: false
+      unlocked: false,
+      coverage: 50
     },
     {
       id: 4,
-      unlocked: false
+      unlocked: false,
+      coverage: 50
     },
     {
       id: 5,
-      unlocked: false
+      unlocked: false,
+      coverage: 50
     }
   ]
 };

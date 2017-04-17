@@ -1,6 +1,4 @@
 export const login = (payload) => {
-  console.log('payload', payload);
-
   return {
     isAuthenticated: true,
     username: payload.username,

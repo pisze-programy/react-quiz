@@ -6,8 +6,9 @@ import {watchLeaderboardList} from './loadLeaderboardList';
 import {watchQuizLevels} from './loadQuizLevels';
 import {
   watchUserLogin,
-  watchUserLogout
-} from './userLogin';
+  watchUserLogout,
+  watchUserAddPoints,
+} from './user';
 
 export default function* root() {
   yield [
@@ -18,5 +19,6 @@ export default function* root() {
     fork(watchQuizLevels),
     fork(watchUserLogin),
     fork(watchUserLogout),
+    fork(watchUserAddPoints),
   ];
 }

@@ -6,6 +6,7 @@ import * as questionsActionsCreators from "../actions/questionsActions";
 import * as quizActionsCreators from "../actions/quizActions";
 import * as answersActionsCreators from "../actions/answersActions";
 import * as navActionsCreators from "../actions/navActions";
+import * as userActionsCreators from "../actions/userActions";
 import QuestionContainer from "../containers/Question/QuestionContainer";
 import AnswersList from "../components/Answer/AnswerList";
 
@@ -52,6 +53,8 @@ export class QuizPage extends Component {
     this.nextQuestion = this.nextQuestion.bind(this);
     this.checkAnswerStatus = this.checkAnswerStatus.bind(this);
     this.goToNav = this.goToNav.bind(this);
+    this.goToNextLevel = this.goToNextLevel.bind(this);
+    this.goToSummary = this.goToSummary.bind(this);
   }
 
   componentWillMount() {
@@ -80,9 +83,34 @@ export class QuizPage extends Component {
   }
 
   nextQuestion() {
+    const currentIndex = this.props.questions.list.indexOf(this.props.questions.current);
+
     this.props.answersActions.clearAnswer(this.props.answers);
 
-    return this.props.questionsActions.nextQuestion(this.props.questions);
+    if (this.props.questions.list[currentIndex + 1]) {
+      this.props.questionsActions.nextQuestion(this.props.questions);
+    } else {
+      this.goToSummary();
+    }
+  }
+
+  goToSummary() {
+    let points = 0;
+    this.props.answers.list.map(answer => points += answer.points);
+
+    const preparePoints = Object.assign({}, this.props.user, {score: this.props.user.score + points});
+
+    this.props.questionsActions.resetCurrentQuestion(this.props.questions);
+    this.props.userActions.addPoints(preparePoints);
+  }
+
+  goToNextLevel() {
+    const prepareLevelId = this.props.questions.level + 1;
+
+    this.props.answersActions.resetAnswers(this.props.answers);
+    this.props.questionsActions.resetActiveQuestionsLevel(this.props.questions);
+
+    this.loadQuestions(prepareLevelId);
   }
 
   goToNav(href) {
@@ -144,8 +172,13 @@ export class QuizPage extends Component {
           {this.props.quiz.levels.map(level => {
             return (
               <div key={level.id}>
-                <button type="button" className="button primary" disabled={!level.unlocked}
-                        onClick={() => this.loadQuestions(level.id)}>Level: {level.id}</button>
+                <button
+                  type="button"
+                  className="button primary"
+                  disabled={!level.unlocked}
+                  onClick={() => this.loadQuestions(level.id)}>
+                  Level: {level.id}
+                </button>
               </div>
             )
           })}
@@ -154,22 +187,31 @@ export class QuizPage extends Component {
     }
 
     if (this.props.answers.list && this.props.answers.list.length && !this.props.questions.current) {
+      let coverage = 0;
       let points = 0;
       let total = 0;
+      let status = 0;
 
       this.props.answers.list.map(answer => {
         points += answer.points;
         total += answer.question.score;
 
+        if (answer.status) status += 1;
+
         return answer;
       });
+
+      coverage = (status / this.props.questions.list.length) * 100;
 
       return (
         <div className="no-more-questions">
           <div className="row">
             <div className="small-12 column">
-              <p>You received a {points} of total {total} score</p>
               <p>No more questions</p>
+
+              <p>Coverage {coverage}%</p>
+
+              <p>You received a {points} of total {total} score</p>
             </div>
 
             <hr/>
@@ -180,7 +222,9 @@ export class QuizPage extends Component {
                   <a onClick={() => this.loadQuizLevels(this.props.quiz.current.id)}>Back to level list</a>
                 </div>
                 <div className="small-12 medium-6 columns large-text-right">
-                  <a>Go to next level</a>{/*onClick={this.nextLevel}*/}
+                  {coverage >= this.props.quiz.levels[this.props.questions.level].coverage && (
+                    <a onClick={this.goToNextLevel}>Go to next level</a>
+                  )}
                 </div>
               </div>
 
@@ -241,6 +285,7 @@ QuizPage.propTypes = {
   questions: PropTypes.object.isRequired,
   answers: PropTypes.object.isRequired,
   quiz: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   nav: PropTypes.object.isRequired,
 };
 
@@ -251,6 +296,7 @@ function mapStateToProps(state) {
     answers: state.answers,
     quiz: state.quiz,
     nav: state.nav,
+    user: state.user,
   }
 }
 
@@ -261,6 +307,7 @@ function mapDispatchToProps(dispatch) {
     answersActions: bindActionCreators(answersActionsCreators, dispatch),
     quizActions: bindActionCreators(quizActionsCreators, dispatch),
     navActions: bindActionCreators(navActionsCreators, dispatch),
+    userActions: bindActionCreators(userActionsCreators, dispatch),
   };
 }
 

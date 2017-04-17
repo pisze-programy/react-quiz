@@ -8,10 +8,9 @@ export default function AnswersList({answers}) {
       <table>
         <thead>
           <tr>
-            <th>ID:</th>
-            <th>Question:</th>
             <th>Status</th>
-            <th>Time:</th>
+            <th>Question:</th>
+            <th>Time Left:</th>
             <th>Max points:</th>
             <th>Your Score:</th>
           </tr>
@@ -20,9 +19,8 @@ export default function AnswersList({answers}) {
         {answers.map((answer, index) => {
           return (
             <tr key={index}>
-              <th>{index + 1}</th>
+              <th className={answer.status ? "good-answer" : "bad-answer"}>{answer.status ? "good" : "bad"}</th>
               <th>{answer.question.title}</th>
-              <th className={answer.status ? "good-answer" : "bad-answer"}>{answer.status ? "GOOD" : "BAD"}</th>
               <th>{answer.time / 1000} s</th>
               <th>{answer.question.score}</th>
               <th>{answer.points}</th>

@@ -47,6 +47,14 @@ export default function questionsReducer(state = {}, action) {
 
       return Object.assign({}, action.payload, prepare);
 
+
+    case types.RESET_CURRENT_QUESTION:
+      prepare = {
+        current: null
+      };
+
+      return Object.assign({}, action.payload, prepare);
+
     default:
       return state;
   }

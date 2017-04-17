@@ -64,6 +64,10 @@ export class Header extends Component {
 
           <Tabs index={this.state.index} onChange={this.handleTabChange} fixed>
             {this.state.list.map((item, index) => {
+              if (item.label === "Profile" && this.props.user && this.props.user.score) {
+                return <Tab key={index} label={item.label + " | " + this.props.user.score} />
+              }
+
               return <Tab key={index} label={item.label} />
             })}
           </Tabs>

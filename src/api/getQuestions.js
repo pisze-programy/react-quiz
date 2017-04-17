@@ -44,7 +44,7 @@ export const fetchQuestions = (payload) => {
         ]
       }
     ]
-  } else {
+  } else if (payload.level === 1) {
     return [
       {
         title: 'What is most common language in the world?',
@@ -89,5 +89,7 @@ export const fetchQuestions = (payload) => {
         ]
       }
     ]
+  } else {
+    return []
   }
 };

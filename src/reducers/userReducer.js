@@ -62,6 +62,29 @@ export default function userReducer(state = {}, action) {
 
       return Object.assign({}, state, prepare);
 
+    case types.ADD_POINTS:
+      prepare = {
+        isFetching: true,
+      };
+
+      return Object.assign({}, action.payload, prepare);
+
+    case types.RECEIVED_ADD_POINTS:
+      prepare = {
+        isFetching: false,
+      };
+
+      return Object.assign({}, state, action.user, prepare);
+
+    case types.FAILURE_ADD_POINTS:
+      prepare = {
+        isFetching: false,
+        error: action.error,
+      };
+
+      return Object.assign({}, state, prepare);
+
+
     default:
       return state;
   }
