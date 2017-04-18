@@ -7,8 +7,10 @@ export function* loadQuizList() {
     const list = yield call(fetchQuizList);
 
     yield put({type: types.RECEIVED_QUIZ_LIST, list: list});
+    yield put({type: types.ADD_SUCCESS});
   } catch (error) {
-    yield put({type: types.FAILURE_QUIZ_LIST, error})
+    yield put({type: types.FAILURE_QUIZ_LIST, error});
+    yield put({type: types.ADD_ERROR, error});
   }
 }
 

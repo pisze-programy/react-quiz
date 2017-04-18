@@ -11,11 +11,13 @@ export function* userLogin(action) {
     localStorage.setItem('token', JSON.stringify(user));
 
     yield put({type: types.RECEIVED_LOGIN, user: user});
+    yield put({type: types.ADD_SUCCESS});
   } catch (error) {
 
     localStorage.removeItem('token');
 
-    yield put({type: types.FAILURE_LOGIN, error})
+    yield put({type: types.FAILURE_LOGIN, error});
+    yield put({type: types.ADD_ERROR, error});
   }
 }
 
@@ -30,9 +32,11 @@ export function* userLogout(action) {
     localStorage.removeItem('token');
 
     yield put({type: types.RECEIVED_LOGOUT, user: user});
+    yield put({type: types.ADD_SUCCESS});
   } catch (error) {
 
-    yield put({type: types.FAILURE_LOGOUT, error})
+    yield put({type: types.FAILURE_LOGOUT, error});
+    yield put({type: types.ADD_ERROR, error});
   }
 }
 
@@ -45,9 +49,11 @@ export function* userAddPoints(action) {
     const user = yield call(addPoints, action.payload);
 
     yield put({type: types.RECEIVED_ADD_POINTS, user: user});
+    yield put({type: types.ADD_SUCCESS});
   } catch (error) {
 
-    yield put({type: types.FAILURE_ADD_POINTS, error})
+    yield put({type: types.FAILURE_ADD_POINTS, error});
+    yield put({type: types.ADD_ERROR, error});
   }
 }
 

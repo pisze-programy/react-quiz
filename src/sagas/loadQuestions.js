@@ -7,8 +7,10 @@ export function* loadQuestions(action) {
     const questions = yield call(fetchQuestions, action.payload);
 
     yield put({type: types.RECEIVED_QUESTIONS, questions: questions});
+    yield put({type: types.ADD_SUCCESS});
   } catch (error) {
-    yield put({type: types.FAILURE_LOAD_QUESTIONS, error})
+    yield put({type: types.FAILURE_LOAD_QUESTIONS, error});
+    yield put({type: types.ADD_ERROR, error});
   }
 }
 

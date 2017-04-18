@@ -7,8 +7,10 @@ export function* loadQuizLevels(action) {
     const levels = yield call(fetchQuizLevels, action.payload);
 
     yield put({type: types.RECEIVED_QUIZ_LEVELS, levels: levels});
+    yield put({type: types.ADD_SUCCESS});
   } catch (error) {
-    yield put({type: types.FAILURE_QUIZ_LEVELS, error})
+    yield put({type: types.FAILURE_QUIZ_LEVELS, error});
+    yield put({type: types.ADD_ERROR, error});
   }
 }
 

@@ -7,8 +7,10 @@ export function* loadLeaderboardList() {
     const list = yield call(fetchLeaderboard);
 
     yield put({type: types.RECEIVED_LEADERBOARD_LIST, list: list});
+    yield put({type: types.ADD_SUCCESS});
   } catch (error) {
-    yield put({type: types.FAILURE_LEADERBOARD_LIST, error})
+    yield put({type: types.FAILURE_LEADERBOARD_LIST, error});
+    yield put({type: types.ADD_ERROR, error});
   }
 }
 

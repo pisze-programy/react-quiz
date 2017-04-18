@@ -5,6 +5,7 @@ import answers from "./answersReducer";
 import leaderboard from "./leaderboardReducer";
 import nav from "./navReducer";
 import user from "./userReducer";
+import notification from "./notificationReducer";
 
 const rootReducer = combineReducers({
   quiz,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   answers,
   leaderboard,
   nav,
-  user
+  user,
+  notification
 });
 
 export default rootReducer;

@@ -41,3 +41,10 @@ export const FAILURE_LOGOUT = 'FAILURE_LOGOUT';
 export const ADD_POINTS = 'ADD_POINTS';
 export const RECEIVED_ADD_POINTS = 'RECEIVED_ADD_POINTS';
 export const FAILURE_ADD_POINTS = 'FAILURE_ADD_POINTS';
+
+export const ADD_ERROR = 'ADD_ERROR';
+export const REMOVE_ERROR = 'REMOVE_ERROR';
+export const ADD_LOADER = 'ADD_LOADER';
+export const REMOVE_LOADER = 'REMOVE_LOADER';
+export const ADD_SUCCESS = 'ADD_SUCCESS';
+export const REMOVE_SUCCESS = 'REMOVE_SUCCESS';
