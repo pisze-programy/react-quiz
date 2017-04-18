@@ -23,7 +23,7 @@ export default function AnswersList({answers}) {
               <th>{answer.question.title}</th>
               <th>{answer.time / 1000} s</th>
               <th>{answer.question.score}</th>
-              <th>{answer.points}</th>
+              <th>{answer.status ? answer.points : 0}</th>
             </tr>
           )
         })}

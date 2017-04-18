@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
-import {browserHistory} from 'react-router';
+import {browserHistory} from "react-router";
 import {bindActionCreators} from "redux";
 import * as questionsActionsCreators from "../actions/questionsActions";
 import * as quizActionsCreators from "../actions/quizActions";
@@ -8,7 +8,8 @@ import * as answersActionsCreators from "../actions/answersActions";
 import * as navActionsCreators from "../actions/navActions";
 import * as userActionsCreators from "../actions/userActions";
 import QuestionContainer from "../containers/Question/QuestionContainer";
-import AnswersList from "../components/Answer/AnswerList";
+import SummaryContainer from "../containers/Quiz/SummaryContainer";
+import Levels from "../components/Quiz/Levels";
 
 import ProgressBar from "react-toolbox/lib/progress_bar";
 import Card from "react-toolbox/lib/card/Card";
@@ -55,6 +56,7 @@ export class QuizPage extends Component {
     this.goToNav = this.goToNav.bind(this);
     this.goToNextLevel = this.goToNextLevel.bind(this);
     this.goToSummary = this.goToSummary.bind(this);
+    this.calcPoints = this.calcPoints.bind(this);
   }
 
   componentWillMount() {
@@ -83,21 +85,12 @@ export class QuizPage extends Component {
   }
 
   nextQuestion() {
-    const currentIndex = this.props.questions.list.indexOf(this.props.questions.current);
-
     this.props.answersActions.clearAnswer(this.props.answers);
-
-    if (this.props.questions.list[currentIndex + 1]) {
-      this.props.questionsActions.nextQuestion(this.props.questions);
-    } else {
-      this.goToSummary();
-    }
+    this.props.questionsActions.nextQuestion(this.props.questions);
   }
 
   goToSummary() {
-    let points = 0;
-    this.props.answers.list.map(answer => points += answer.points);
-
+    let points = this.calcPoints();
     const preparePoints = Object.assign({}, this.props.user, {score: this.props.user.score + points});
 
     this.props.questionsActions.resetCurrentQuestion(this.props.questions);
@@ -105,12 +98,12 @@ export class QuizPage extends Component {
   }
 
   goToNextLevel() {
-    const prepareLevelId = this.props.questions.level + 1;
+    const id = this.props.questions.level + 1;
 
     this.props.answersActions.resetAnswers(this.props.answers);
     this.props.questionsActions.resetActiveQuestionsLevel(this.props.questions);
 
-    this.loadQuestions(prepareLevelId);
+    this.loadQuestions(id);
   }
 
   goToNav(href) {
@@ -123,6 +116,20 @@ export class QuizPage extends Component {
 
       return false;
     });
+  }
+
+  calcPoints() {
+    let points = 0;
+
+    this.props.answers.list.map(answer => {
+      if (answer.status) {
+        return points += answer.points;
+      }
+
+      return answer;
+    });
+
+    return points
   }
 
   checkAnswerStatus(data) {
@@ -168,77 +175,22 @@ export class QuizPage extends Component {
 
     if (this.props.questions.level === null && this.props.quiz.levels.length) {
       return (
-        <div>
-          {this.props.quiz.levels.map(level => {
-            return (
-              <div key={level.id}>
-                <button
-                  type="button"
-                  className="button primary"
-                  disabled={!level.unlocked}
-                  onClick={() => this.loadQuestions(level.id)}>
-                  Level: {level.id}
-                </button>
-              </div>
-            )
-          })}
-        </div>
+        <Levels
+          loadQuestions={this.loadQuestions}
+          levels={this.props.quiz.levels} />
       )
     }
 
     if (this.props.answers.list && this.props.answers.list.length && !this.props.questions.current) {
-      let coverage = 0;
-      let points = 0;
-      let total = 0;
-      let status = 0;
-
-      this.props.answers.list.map(answer => {
-        points += answer.points;
-        total += answer.question.score;
-
-        if (answer.status) status += 1;
-
-        return answer;
-      });
-
-      coverage = (status / this.props.questions.list.length) * 100;
-
       return (
-        <div className="no-more-questions">
-          <div className="row">
-            <div className="small-12 column">
-              <p>No more questions</p>
-
-              <p>Coverage {coverage}%</p>
-
-              <p>You received a {points} of total {total} score</p>
-            </div>
-
-            <hr/>
-
-            <div className="small-12 column">
-              <div className="row">
-                <div className="small-12 medium-6 columns">
-                  <a onClick={() => this.loadQuizLevels(this.props.quiz.current.id)}>Back to level list</a>
-                </div>
-                <div className="small-12 medium-6 columns large-text-right">
-                  {coverage >= this.props.quiz.levels[this.props.questions.level].coverage && (
-                    <a onClick={this.goToNextLevel}>Go to next level</a>
-                  )}
-                </div>
-              </div>
-
-              <AnswersList answers={this.props.answers.list}/>
-
-            </div>
-
-            <hr/>
-
-            <div className="small-12 column">
-              <a onClick={() => this.goToNav('/leaderboard')}>Show Leaderboard</a>
-            </div>
-          </div>
-        </div>
+        <SummaryContainer
+          goToSummary={this.goToSummary}
+          answers={this.props.answers}
+          questions={this.props.questions}
+          quiz={this.props.quiz}
+          calcPoints={this.calcPoints}
+          loadQuizLevels={this.loadQuizLevels}
+          goToNextLevel={this.goToNextLevel} />
       )
     }
 
