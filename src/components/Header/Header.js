@@ -3,11 +3,9 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {browserHistory} from 'react-router';
 import * as navActionsCreators from "../../actions/navActions";
-import * as notificiationsActionsCreators from "../../actions/notificationActions";
 
 import Tab from 'react-toolbox/lib/tabs/Tab';
 import Tabs from 'react-toolbox/lib/tabs/Tabs';
-import ProgressBar from "react-toolbox/lib/progress_bar";
 
 export class Header extends Component {
   constructor(props) {
@@ -21,11 +19,6 @@ export class Header extends Component {
         {label: 'About', href: '/about'},
         {label: 'Profile', href: '/profile'},
       ],
-      notification: {
-        error: null,
-        loader: null,
-        success: null,
-      }
     };
 
     this.handleTabChange = this.handleTabChange.bind(this);
@@ -47,24 +40,6 @@ export class Header extends Component {
       this.setState({
         index: nextProps.nav.index
       });
-    }
-
-    if (nextProps.notification.error) {
-      setTimeout(() => {
-        this.props.notificationActions.removeError(this.state.notification);
-      }, 1000);
-    }
-
-    if (nextProps.notification.loader) {
-      setTimeout(() => {
-        this.props.notificationActions.removeLoader(this.state.notification);
-      }, 1000);
-    }
-
-    if (nextProps.notification.success) {
-      setTimeout(() => {
-        this.props.notificationActions.removeSuccess(this.state.notification);
-      }, 1000);
     }
   }
 
@@ -98,29 +73,15 @@ export class Header extends Component {
               return <Tab key={index} label={item.label} />
             })}
           </Tabs>
-
-          {this.props.notification.loader && (
-            <ProgressBar type="linear" mode="indeterminate"/>
-          )}
-
-          {this.props.notification.error && (
-            <div>Error {this.props.notification.error}</div>
-          )}
-
-          {this.props.notification.success && (
-            <div>Success {this.props.notification.success}</div>
-          )}
         </div>
       </div>
     )
   }
 }
 
-
 Header.propTypes = {
   user: PropTypes.object.isRequired,
   nav: PropTypes.object.isRequired,
-  notification: PropTypes.object.isRequired,
 };
 
 /* istanbul ignore next */
@@ -128,7 +89,6 @@ function mapStateToProps(state) {
   return {
     nav: state.nav,
     user: state.user,
-    notification: state.notification,
   }
 }
 
@@ -136,7 +96,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     navActions: bindActionCreators(navActionsCreators, dispatch),
-    notificationActions: bindActionCreators(notificiationsActionsCreators, dispatch),
   };
 }
 

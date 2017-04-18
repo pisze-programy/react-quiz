@@ -4,9 +4,12 @@ import {mount} from "enzyme";
 import TimeProgress from "./TimeProgress.js";
 
 describe('Game page tests:', () => {
-  const percent = 50;
+  const timer = {
+    time: 1000,
+    value: 50,
+  };
 
-  const component = mount(<TimeProgress percent={percent} />);
+  const component = mount(<TimeProgress time={timer.time} value={timer.value} />);
 
   it('Should render TimeProgress component', () => {
     expect(component.length).toBeTruthy();
