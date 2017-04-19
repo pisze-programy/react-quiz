@@ -4,21 +4,12 @@ import quizReducer from './quizReducer';
 import * as types from '../actions/actionTypes';
 
 describe('Quiz Actions tests:', () => {
-  it('Start Quiz action should return payload', () => {
-    const action = {
-      type: types.START_QUIZ,
-      payload: {
-        start: false,
-        finish: false,
-      }
-    };
+  it('Quiz Reducer should return default payload', () => {
+    const action = {};
 
     const state = {};
 
-    const reducer = {
-      start: true,
-      finish: false,
-    };
+    const reducer = {};
 
     expect(quizReducer(state, action)).toEqual(reducer);
   });

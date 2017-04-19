@@ -54,7 +54,7 @@ export class QuizPage extends Component {
     this.nextQuestion = this.nextQuestion.bind(this);
     this.checkAnswerStatus = this.checkAnswerStatus.bind(this);
     this.goToNav = this.goToNav.bind(this);
-    this.goToNextLevel = this.goToNextLevel.bind(this);
+    this.goToLevel = this.goToLevel.bind(this);
     this.goToSummary = this.goToSummary.bind(this);
     this.calcPoints = this.calcPoints.bind(this);
   }
@@ -97,9 +97,7 @@ export class QuizPage extends Component {
     this.props.userActions.addPoints(preparePoints);
   }
 
-  goToNextLevel() {
-    const id = this.props.questions.level + 1;
-
+  goToLevel(id) {
     this.props.answersActions.resetAnswers(this.props.answers);
     this.props.questionsActions.resetActiveQuestionsLevel(this.props.questions);
 
@@ -190,7 +188,8 @@ export class QuizPage extends Component {
           quiz={this.props.quiz}
           calcPoints={this.calcPoints}
           loadQuizLevels={this.loadQuizLevels}
-          goToNextLevel={this.goToNextLevel} />
+          goToCurrentLevel={() => this.goToLevel(this.props.questions.level)}
+          goToNextLevel={() => this.goToLevel(this.props.questions.level + 1)} />
       )
     }
 

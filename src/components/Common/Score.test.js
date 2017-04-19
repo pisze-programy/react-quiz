@@ -13,6 +13,10 @@ describe('Game page tests:', () => {
   });
 
   it('Should have child', () => {
-    expect(component.find('div').length).toEqual(1);
+    expect(component.find('span').length).toEqual(1);
+  });
+
+  it('Should show points', () => {
+    expect(component.find('span').text()).toEqual("123");
   });
 });

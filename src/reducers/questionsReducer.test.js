@@ -95,7 +95,6 @@ describe('Quiz Actions tests:', () => {
     const state = {};
 
     const reducer = {
-      type: types.FAILURE_LOAD_QUESTIONS,
       error,
       isFetching: false
     };

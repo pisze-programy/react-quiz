@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import AnswersList from "../../components/Answer/AnswerList";
+import "./SummaryContainer.css";
 
 export default class SummaryContainer extends Component {
   constructor(props) {
@@ -41,36 +42,63 @@ export default class SummaryContainer extends Component {
   render() {
     const coverage = this.checkLevelCoverage();
     const points = this.props.calcPoints();
-    const total = this.calcTotalAvailablePoints();
+    // const total = this.calcTotalAvailablePoints();
+
+    let summaryActionButton = <button className="button expanded" onClick={this.props.goToCurrentLevel}>Try again</button>;
+
+    if (coverage >= this.props.quiz.levels[this.props.questions.level].coverage) {
+      summaryActionButton = (
+        <button className="button expanded" onClick={this.props.goToNextLevel}>Go to next level</button>
+      );
+    }
 
     return (
       <div className="quiz-summary">
         <div className="row">
-          <div className="small-12 column">
-            <p>No more questions</p>
-
-            <p>Coverage {coverage}%</p>
-
-            <p>You received a {points} of total {total} score</p>
-          </div>
-
-          <hr/>
+          <div className="spacer s2" />
 
           <div className="small-12 column">
-            <div className="row">
-              <div className="small-12 medium-6 columns">
-                <a onClick={() => this.props.loadQuizLevels(this.props.quiz.current.id)}>Back to level list</a>
+
+            <div className="summary-head text-center">
+
+              <div className="row">
+                <div className="small-12 medium-4 columns percent-section">
+                  <span className="summary-value">{coverage}<span className="percent-sign">%</span></span>
+                  <p>Correct</p>
+                </div>
+
+                <div className="small-12 medium-4 columns time-section">
+                  <span className="summary-value">0</span>
+                  <p>Seconds Avg to Answer</p>
+                </div>
+
+                <div className="small-12 medium-4 columns score-section">
+                  <span className="summary-value">+ {points}</span>
+                  <p>Your Score</p>
+                </div>
               </div>
-              <div className="small-12 medium-6 columns large-text-right">
-                {coverage >= this.props.quiz.levels[this.props.questions.level].coverage && (
-                  <a onClick={this.props.goToNextLevel}>Go to next level</a>
-                )}
-              </div>
+
             </div>
-
-            <AnswersList answers={this.props.answers.list}/>
-
           </div>
+
+          <div className="small-12 column">
+            <AnswersList answers={this.props.answers.list}/>
+          </div>
+
+          <div className="spacer s2" />
+          <hr/>
+          <div className="spacer s2" />
+
+          <div className="small-12 medium-6 columns">
+            <button className="button expanded" onClick={() => this.props.loadQuizLevels(this.props.quiz.current.id)}>
+              Back to level list
+            </button>
+          </div>
+
+          <div className="small-12 medium-6 columns large-text-right">
+            {summaryActionButton}
+          </div>
+
         </div>
       </div>
     );
@@ -78,6 +106,7 @@ export default class SummaryContainer extends Component {
 }
 
 SummaryContainer.propTypes = {
+  goToCurrentLevel: PropTypes.func.isRequired,
   loadQuizLevels: PropTypes.func.isRequired,
   goToNextLevel: PropTypes.func.isRequired,
   questions: PropTypes.object.isRequired,

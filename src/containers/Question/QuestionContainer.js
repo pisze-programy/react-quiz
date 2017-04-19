@@ -5,6 +5,7 @@ import QuestionCounter from "../../components/Question/QuestionCounter";
 import Score from "../../components/Common/Score";
 import TimeProgress from "../../components/Common/TimeProgress";
 import AnswerStatus from "../../components/Answer/AnswerStatus";
+import "./QuestionContainer.css";
 
 export default class QuestionContainer extends Component {
   constructor(props) {
@@ -119,33 +120,55 @@ export default class QuestionContainer extends Component {
   render() {
     return (
       <div className="question-container">
-          <div>
-            <Score points={this.props.questions.current.score}/>
+          <div className="row">
+            <div className="small-12 medium-3 medium-offset-3 columns text-center">
+              <span className="question-head-value">
+                <QuestionCounter
+                  total={this.props.questions.list.length}
+                  current={this.props.questions.current.id + 1} />
+              </span>
+              <p>Correct question</p>
+            </div>
 
-            <TimeProgress
-              value={this.state.timer.value}
-              time={this.state.timer.time} />
+            <div className="small-12 medium-3 columns text-center">
+              <span className="question-head-value">
+                + <Score points={this.props.questions.current.score}/>
+              </span>
+              <p>Score to get</p>
+            </div>
 
-            <QuestionCounter
-              total={this.props.questions.list.length}
-              current={this.props.questions.current.id + 1} />
+            <div className="small-12 medium-6 medium-offset-3 columns text-center">
+              <div className="spacer s2" />
 
-            <Question question={this.props.questions.current} />
+              <TimeProgress
+                value={this.state.timer.value}
+                time={this.state.timer.time} />
 
-            {this.props.questions.current.answers.map(answer => {
-              return <AnswerOption
-                onClickHandle={this.onAnswerClick}
-                key={answer.id}
-                id={answer.id.toString()}
-                type={"answer-" + this.props.questions.current.type + '-' + answer.id}
-                content={answer.title} />
-            })}
+              <div className="spacer s2" />
+            </div>
 
-            {this.props.answers &&
-              <AnswerStatus
-                answer={this.props.answers}
-                closeAction={this.props.nextQuestion}/>
-            }
+            <div className="small-11 medium-10 large-6 large-offset-3 column">
+              <div className="text-center">
+                <Question question={this.props.questions.current} />
+              </div>
+
+              {this.props.questions.current.answers.map(answer => {
+                return <AnswerOption
+                  onClickHandle={this.onAnswerClick}
+                  key={answer.id}
+                  id={answer.id.toString()}
+                  type={"answer-" + this.props.questions.current.type + '-' + answer.id}
+                  content={answer.title} />
+              })}
+            </div>
+
+            <div className="small-12 column">
+              {this.props.answers &&
+                <AnswerStatus
+                  answer={this.props.answers}
+                  closeAction={this.props.nextQuestion}/>
+              }
+            </div>
           </div>
       </div>
     );

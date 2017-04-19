@@ -2,13 +2,13 @@ import React, {PropTypes} from "react";
 
 export default function Levels({levels, loadQuestions}) {
   return (
-    <div>
+    <div className="row">
       {levels.map(level => {
         return (
-          <div key={level.id}>
+          <div className="small-3 column" key={level.id}>
             <button
               type="button"
-              className="button primary"
+              className="button expanded"
               disabled={!level.unlocked}
               onClick={() => loadQuestions(level.id)}>
               Level: {level.id}

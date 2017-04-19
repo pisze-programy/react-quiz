@@ -47,6 +47,10 @@ export function* watchUserLogout() {
 export function* userAddPoints(action) {
   try {
     const user = yield call(addPoints, action.payload);
+    const token = localStorage.getItem('token');
+    const prepare = Object.assign({}, JSON.parse(token), user);
+
+    localStorage.setItem('token', JSON.stringify(prepare));
 
     yield put({type: types.RECEIVED_ADD_POINTS, user: user});
     yield put({type: types.ADD_SUCCESS});

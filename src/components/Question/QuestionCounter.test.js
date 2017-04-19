@@ -14,14 +14,10 @@ describe('Game page tests:', () => {
   });
 
   it('Should have child', () => {
-    expect(component.find('div').length).toEqual(1);
-  });
-
-  it('Should have paragraph inside wrapper', () => {
-    expect(component.find('div').find('p').length).toEqual(1);
+    expect(component.find('span').length).toEqual(1);
   });
 
   it('Should render counter in paragraph', () => {
-    expect(component.find('div').find('p').text()).toBe("1 / 2");
+    expect(component.find('span').text()).toBe("1 / 2");
   });
 });
