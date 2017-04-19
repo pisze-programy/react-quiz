@@ -14,19 +14,17 @@ export default function userReducer(state = {}, action) {
     case types.RECEIVED_LOGIN:
       prepare = {
         isFetching: false,
-        password: null,
         error: null,
         username: action.user.username,
         score: action.user.score,
         isAuthenticated: action.user.isAuthenticated,
       };
 
-      return Object.assign({}, state, prepare);
+      return Object.assign({}, action.user, state, prepare);
 
     case types.FAILURE_LOGIN:
       prepare = {
         isFetching: false,
-        password: null,
         username: null,
         score: null,
         isAuthenticated: false,
@@ -44,8 +42,8 @@ export default function userReducer(state = {}, action) {
 
     case types.RECEIVED_LOGOUT:
       prepare = {
+        id: null,
         isFetching: false,
-        password: null,
         error: null,
         username: null,
         score: null,

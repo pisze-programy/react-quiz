@@ -7,7 +7,7 @@ export class LoginContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state= {
+    this.state = {
       user: {
         username: null,
         password: null,
@@ -30,6 +30,10 @@ export class LoginContainer extends Component {
     });
 
     this.props.userActions.login(this.state.user);
+
+    this.setState({
+      user: Object.assign({}, this.state.user, {password: null})
+    })
   }
 
   render() {

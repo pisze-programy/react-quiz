@@ -14,14 +14,31 @@ export class LeaderboardPage extends Component {
         isFetching: true,
         error: false,
       }
-    }
+    };
+
+    this.isUserOnList = this.isUserOnList.bind(this);
   }
 
   componentWillMount() {
     this.props.leaderboardActions.loadLeaderboard(this.state.leaderboard);
   }
 
+  isUserOnList() {
+    const list = this.props.leaderboard.list;
+    let i;
+
+    for (i = 0; i < list.length; i++) {
+      if (list[i].id === this.props.user.id) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   render() {
+    let userBoard = null;
+
     if (this.props.leaderboard.isFetching) {
       return (
         <div>
@@ -43,24 +60,35 @@ export class LeaderboardPage extends Component {
       )
     }
 
-    return (
-      <div className="leaderboard-page">
-        Leaderboard
+    console.log(this.isUserOnList());
 
-        <br/>
+    if (!this.isUserOnList()) {
+      userBoard = (
+        <tr className="specialRow">
+          <td>0</td>
+          <td>YOU ARE FIRST!</td>
+          <td>{this.props.user.score}</td>
+        </tr>
+      )
+    }
+
+    return (
+      <div className="row column">
+        Leaderboard
+        <div className="spacer s2" />
 
         TOP 5:
-
-        <br/>
+        <div className="spacer s1" />
 
         <table>
           <tbody>
-            {this.props.leaderboard.list.map(element => {
+            {userBoard}
+            {this.props.leaderboard.list.map((element, index) => {
               return (
                 <tr key={element.id}>
-                  <th>{element.id}</th>
-                  <th>{element.name}</th>
-                  <th>{element.points}</th>
+                  <td>{index + 1}</td>
+                  <td>{element.name}</td>
+                  <td>{element.points}</td>
                 </tr>
               )
             })}
@@ -73,12 +101,14 @@ export class LeaderboardPage extends Component {
 
 LeaderboardPage.propTypes = {
   leaderboard: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    leaderboard: state.leaderboard
+    leaderboard: state.leaderboard,
+    user: state.user,
   }
 }
 
