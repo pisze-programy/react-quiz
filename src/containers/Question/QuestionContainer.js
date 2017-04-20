@@ -11,6 +11,16 @@ export default class QuestionContainer extends Component {
   constructor(props) {
     super(props);
 
+    /**
+     * State of Question Container:
+     *
+     * - Timer {Object}:
+     *  - points Should be calculated (maxPoints * percentOf(timeLeft / maxTimePerQuestion) / 100) to Normalize it value
+     *  - value is current percentOf(timeLeft / maxTimePerQuestion)
+     *  - time is How much time left (maxTimePerQuestion - "buffer") per iteration
+     *  - timeout is How much time gone till Answer action
+     *  - buffer is value of Interval time
+     * */
     this.state = {
       answer: {
         id: null,
@@ -22,6 +32,7 @@ export default class QuestionContainer extends Component {
         points: 0,
         value: 0,
         time: 0,
+        timeout: 0,
         buffer: 100,
       },
       stopTimeCounter: false,
@@ -38,7 +49,7 @@ export default class QuestionContainer extends Component {
     const answer = Object.assign({}, this.state.answer, {
       id,
       points: this.state.timer.points,
-      time: this.state.timer.time,
+      time: this.state.timer.timeout,
       question: this.props.questions.current
     });
 
@@ -81,6 +92,7 @@ export default class QuestionContainer extends Component {
         timer: Object.assign({}, this.state.timer, {
           points: Math.round((this.props.questions.current.score) * percent / 100),
           time: this.state.timer.time - this.state.timer.buffer,
+          timeout: this.state.timer.timeout + this.state.timer.buffer,
           value: percent
         })
       });

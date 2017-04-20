@@ -60,8 +60,6 @@ export class LeaderboardPage extends Component {
       )
     }
 
-    console.log(this.isUserOnList());
-
     if (!this.isUserOnList()) {
       userBoard = (
         <tr className="specialRow">

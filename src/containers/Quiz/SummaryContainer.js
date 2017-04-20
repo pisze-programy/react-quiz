@@ -8,6 +8,7 @@ export default class SummaryContainer extends Component {
 
     this.checkLevelCoverage = this.checkLevelCoverage.bind(this);
     this.calcTotalAvailablePoints = this.calcTotalAvailablePoints.bind(this);
+    this.calcAverageAnswerTime = this.calcAverageAnswerTime.bind(this);
   }
 
   componentWillMount() {
@@ -39,10 +40,18 @@ export default class SummaryContainer extends Component {
     return total;
   }
 
+  calcAverageAnswerTime() {
+    let avg = 0;
+
+    this.props.answers.list.map(answer => avg += answer.time);
+
+    return avg / this.props.answers.list.length / 1000;
+  }
+
   render() {
     const coverage = this.checkLevelCoverage();
     const points = this.props.calcPoints();
-    // const total = this.calcTotalAvailablePoints();
+    const avgTime = this.calcAverageAnswerTime();
 
     let summaryActionButton = <button className="button expanded" onClick={this.props.goToCurrentLevel}>Try again</button>;
 
@@ -68,7 +77,7 @@ export default class SummaryContainer extends Component {
                 </div>
 
                 <div className="small-12 medium-4 columns time-section">
-                  <span className="summary-value">0</span>
+                  <span className="summary-value">{avgTime}s</span>
                   <p>Seconds Avg to Answer</p>
                 </div>
 

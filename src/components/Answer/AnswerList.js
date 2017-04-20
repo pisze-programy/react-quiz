@@ -10,8 +10,8 @@ export default function AnswersList({answers}) {
           <tr>
             <th>Status</th>
             <th>Question:</th>
-            <th>Time Left:</th>
-            <th>Max points:</th>
+            <th>Answer Time:</th>
+            <th>Max Points:</th>
             <th>Your Score:</th>
           </tr>
         </thead>
